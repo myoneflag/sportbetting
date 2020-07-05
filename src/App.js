@@ -6,7 +6,6 @@ import { Global } from '@emotion/core'
 import { theme, bodyContent } from './helpers'
 import { Layout } from './layout'
 
-require('./components/styles/index.css')
 require('dotenv').config()
 
 const App = () => {

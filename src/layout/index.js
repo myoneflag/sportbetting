@@ -7,6 +7,11 @@ import { FaGrid } from '../components/layouts'
 import Header from './Header'
 import Footer from './Footer'
 
+import '../assets/styles/style.css';
+import '../assets/styles/responsive.css';
+import '../assets/fonts/font.css';
+import 'bootstrap/dist/css/bootstrap.css';
+
 export const Layout = () => {
 
   const history = useHistory()
