@@ -14,18 +14,18 @@ const Footer = () => {
       <div className="container footer-container">
         <div className="row footer_row">
           <div className="col-sm-12 footer-quick-links-row">
-            <p className="alt-lang"><a href="#">Help</a></p>
+            <p className="alt-lang"><a href="/help">Help</a></p>
             <div className="vl"></div>
-            <p className="alt-lang"><a href="#">Responsible Gambling</a></p>
+            <p className="alt-lang"><a href="/help">Responsible Gambling</a></p>
           </div>
         </div>
         <div className="row footer-logo-row">
           <div className="col-sm-12">
-            <img src={logo1} />
-            <img src={logo2} />
-            <img src={logo3} />
-            <img src={logo4} />
-            <img src={logo5} />
+            <img src={logo1} alt="" />
+            <img src={logo2} alt="" />
+            <img src={logo3} alt="" />
+            <img src={logo4} alt="" />
+            <img src={logo5} alt="" />
           </div>
         </div>
         <div className="row footer_row1">
@@ -44,10 +44,10 @@ const Footer = () => {
               dolores eos qui ratione voluptatem sequi nesciunt</p>
 
             <div className="social-icon-div">
-              <a href="#"><i className="fab fa-facebook-f"></i></a>
-              <a href="#"><i className="fab fa-instagram"></i></a>
-              <a href="#"><i className="fab fa-twitter"></i></a>
-              <a href="#"><i className="fab fa-youtube"></i></a>
+              <a href="facebook.com"><i className="fab fa-facebook-f"></i></a>
+              <a href="instagram.com"><i className="fab fa-instagram"></i></a>
+              <a href="twitter.com"><i className="fab fa-twitter"></i></a>
+              <a href="youtube.com"><i className="fab fa-youtube"></i></a>
             </div>
           </div>
         </div>
@@ -55,7 +55,7 @@ const Footer = () => {
       <div className="container-fluid">
         <div className="row footer-row3">
           <div className="col-sm-12">
-            <img src={footer18} />
+            <img src={footer18} alt="" />
             <p className="Copyright-p"> Copyright<i className="far fa-copyright"></i> 2020</p>
           </div>
         </div>

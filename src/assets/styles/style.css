@@ -483,15 +483,16 @@ td.table1-td1 {
     padding-bottom: 1rem;
 }
 .bet-sec1-div1-football-basketball-tennis-div button {
-  letter-spacing: 1px;
-border: 1px solid #596e79;
-font-size: 12px;
-padding: 5px 25px;
-box-shadow: -3px 3px 4px 0px #33424a;
-color: #FFEB3B;
-background: #37464e;
-border-radius: 2px;
-border-top: 1px solid rgb(118, 140, 91);
+    letter-spacing: 1px;
+    border: 1px solid #596e79;
+    font-size: 12px;
+    padding: 5px 25px;
+    box-shadow: -3px 3px 4px 0px #33424a;
+    color: #FFEB3B;
+    background: #37464e;
+    border-radius: 2px;
+    border-top: 1px solid rgb(118, 140, 91);
+    margin: 0 3px;
 }
 table.table.table1 tr td {
         cursor: pointer;
@@ -543,8 +544,6 @@ table.bet-sec1-lay-back-table tr td {
 .bet-sec1-row1-div2 {
     padding-left: 0px!important;
     padding-right: 0px!important;
-    flex: 0 0 60.333333%!important;
-    max-width: 60.333333%!important;
 }
 .lay_back_active {
   background-color: black!important;
@@ -982,13 +981,22 @@ button.bet-slip-place-bet-btn:hover {
     border: none;
     padding-top: 9px;
 }
-.search-div .dropdown-menu.show {
+.search-div .show {
     width: auto;
     display: block;
     background: #29343a;
     border: none;
-    left: -13rem;
+    /* left: -13rem; */
     padding: 22px 15px;
+    z-index: 1000;
+    float: left;
+    min-width: 10rem;
+    margin: 0.125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    border-radius: 0.25rem;
 }
 .search-div .dropdown-menu {
     position: absolute;
@@ -1004,9 +1012,24 @@ button.bet-slip-place-bet-btn:hover {
     height: 32px;
     padding: 0px 12px;
 }
+.search-div input[type=search] {
+    color: #818181;
+    border-radius: 2px 0px 0px 2px;
+    padding: 0px 10px;
+    border: 1px solid #424f56!important;
+    height: 32px;
+    font-size: 12px;
+    background: transparent;
+    width: 70%;
+    cursor: pointer;
+    margin-top: 4px;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    transition: all .5s;
+}
 .sidenav {
   height: 100%;
-  width: 0;
+  width: 250px;
   position: fixed;
   z-index: 100;
   top: 0;
@@ -1016,11 +1039,11 @@ button.bet-slip-place-bet-btn:hover {
   padding-top: 60px!important;
 }
 
-.sidenav a {
+.sidenav a, .sidenav span {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 13px;
-  color: #818181;
+  color: white;
   display: block;
   transition: 0.3s;
 }
