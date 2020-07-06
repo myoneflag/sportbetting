@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 
 import { Routes } from '../routes/routing'
 
-import { FaGrid } from '../components/layouts'
+import Grid from '@material-ui/core/Grid'
 import Header from './Header'
 import Footer from './Footer'
 
@@ -24,10 +24,10 @@ export const Layout = () => {
   // const currentPath = location.pathname
 
   return (
-    <FaGrid container justify="center" relative>
+    <Grid container>
       <Header />
       <Routes />
       <Footer />
-    </FaGrid>
+    </Grid>
   )
 }

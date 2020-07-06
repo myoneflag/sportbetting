@@ -1,8 +1,8 @@
-body
-{
-	  font-family: 'Open Sans';
+body {
+    font-family: 'Open Sans';
     font-weight: 800;
     font-style: normal;
+    user-select: none;
 }
 
 h1 {
@@ -387,6 +387,7 @@ button.tab-btn1 {
     text-align: center;
     cursor: pointer;
     font-weight: 700;
+    margin: 0 3px;
 }
 button.tab-btn1:hover
 {   
@@ -416,6 +417,7 @@ button.tab-btn1:hover
     text-align: center;
     color: white;
     cursor: pointer;
+    margin: 0 3px;
 }
 .table-box1-div1 span {
     cursor: pointer;

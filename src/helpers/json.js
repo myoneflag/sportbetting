@@ -333,3 +333,72 @@ export const year = [
   {value:"2019", option:"2019"},
   {value:"2020", option:"2020"},
 ]
+
+export const bet = [
+  {
+    title: "Bahraini PR. League",
+    subtitle: "Al Ahli Manama - Manama Club",
+    timestamp: "5/2/2020 15:00",
+    subdata: [
+      {
+        title: "Home",
+        from: {value: 4.42, price: 90, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"},
+        to: {value: 4.43, price: 200, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"}
+      },
+      {
+        title: "Draw",
+        from: {value: 4.42, price: 90, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"},
+        to: {value: 4.43, price: 200, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"}
+      },
+      {
+        title: "Away",
+        from: {value: 4.42, price: 90, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"},
+        to: {value: 4.43, price: 200, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"}
+      }
+    ]
+  },
+  {
+    title: "Club Friendlies",
+    subtitle: "Spartak Moscow - Lokomotiv Moscow",
+    timestamp: "5/2/2020 15:00",
+    subdata: [
+      {
+        title: "Home",
+        from: {value: 4.42, price: 90, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"},
+        to: {value: 4.43, price: 200, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"}
+      },
+      {
+        title: "Draw",
+        from: {value: 4.42, price: 90, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"},
+        to: {value: 4.43, price: 200, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"}
+      },
+      {
+        title: "Away",
+        from: {value: 4.42, price: 90, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"},
+        to: {value: 4.43, price: 200, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"}
+      }
+    ]
+  },
+  {
+    title: "Greek Cup",
+    subtitle: "Panaitolikos - AEK Athens",
+    timestamp: "5/2/2020 15:00",
+    subdata: [
+      {
+        title: "Home",
+        from: {value: 4.42, price: 90, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"},
+        to: {value: 4.43, price: 200, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"}
+      },
+      {
+        title: "Draw",
+        from: {value: 4.42, price: 90, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"},
+        to: {value: 4.43, price: 200, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"}
+      },
+      {
+        title: "Away",
+        from: {value: 4.42, price: 90, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"},
+        to: {value: 4.43, price: 200, desc: "Lay(Bet against) Taipei Red Loins - Match Odds"}
+      }
+    ]
+  }
+]
