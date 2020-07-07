@@ -297,42 +297,10 @@ export const month = [
   {value:"December", option:"December"},
 ]
 
-export const year = [
-  
-  {value:"", option:"Year"},
-  {value:"1990", option:"1990"},
-  {value:"1991", option:"1991"},
-  {value:"1992", option:"1992"},
-  {value:"1993", option:"1992"},
-  {value:"1990", option:"1993"},
-  {value:"1994", option:"1994"},
-  {value:"1995", option:"1995"},
-  {value:"1996", option:"1996"},
-  {value:"1997", option:"1997"},
-  {value:"19918", option:"1998"},
-  {value:"19929", option:"1999"},
-  {value:"2000", option:"2000"},
-  {value:"2001", option:"2001"},
-  {value:"2002", option:"2002"},
-  {value:"2003", option:"2003"},
-  {value:"2004", option:"2004"},
-  {value:"2005", option:"2005"},
-  {value:"2006", option:"2006"},
-  {value:"2007", option:"2007"},
-  {value:"2008", option:"2008"},
-  {value:"2009", option:"2009"},
-  {value:"2010", option:"2010"},
-  {value:"2011", option:"2011"},
-  {value:"2012", option:"2012"},
-  {value:"2013", option:"2013"},
-  {value:"2014", option:"2014"},
-  {value:"2015", option:"2015"},
-  {value:"2016", option:"2016"},
-  {value:"2017", option:"2017"},
-  {value:"2018", option:"2018"},
-  {value:"2019", option:"2019"},
-  {value:"2020", option:"2020"},
-]
+export const year = {
+  from: 1960,
+  to: 2003
+}
 
 export const bet = [
   {
