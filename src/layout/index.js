@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-// import { useLocation, useHistory } from 'react-router-dom'
+import React from 'react'
+import { useLocation } from 'react-router-dom'
 
 import { Routes } from '../routes/routing'
 
@@ -15,17 +15,12 @@ import '../assets/fonts/font.css';
 
 export const Layout = () => {
 
-  // const history = useHistory()
-
-  useEffect(() => {
-  }, [])
-
-  // let location = useLocation()
-  // const currentPath = location.pathname
+  let location = useLocation()
+  const currentPath = location.pathname
 
   return (
     <Grid container>
-      <Header />
+      <Header currentPath={currentPath} />
       <Routes />
       <Footer />
     </Grid>

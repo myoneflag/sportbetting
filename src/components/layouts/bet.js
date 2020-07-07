@@ -52,7 +52,7 @@ const BetTable = ({ data, id }) => {
           <span className="plus" onClick={(e) => increase(e)}>+</span>
         </div>
         <button onClick={() => closeTab('f'+id)} className="cancel-btn table-box1-closebtn">Cancel</button>
-        <a href="#">
+        <a href="/bet">
           <button className="place-btn">Place Bet</button>
         </a>
       </div>
@@ -69,7 +69,7 @@ const BetTable = ({ data, id }) => {
           <span className="plus" onClick={(e) => increase(e)}>+</span>
         </div>
         <button onClick={() => closeTab('t'+id)} className="cancel-btn table-box1-closebtn">Cancel</button>
-        <a href="#"><button className="place-btn">Place Bet</button></a>
+        <a href="/bet"><button className="place-btn">Place Bet</button></a>
       </div>
     </>
   )
@@ -83,7 +83,7 @@ export const BetSection = ({ betData, id }) => {
           <tbody>
             <tr>
               <td className="bet-sec1-league-td">
-                <a href="#">
+                <a href="/bet-detail">
                   <h1>{betData.title}</h1>
                 </a>
               </td>
@@ -98,7 +98,7 @@ export const BetSection = ({ betData, id }) => {
         </table>
       </div>
       <div className="bet-sec1-light-green-div">
-        <a href="#">
+        <a href="/bet-detail">
           <h5>{betData.subtitle}</h5>
         </a>
         <h6>{betData.timestamp}</h6>

@@ -5,14 +5,18 @@ import { BetSection } from '../components/layouts/bet'
 import { BetSlip } from '../components/layouts/betslip'
 import { Detail } from '../components/layouts/detail'
 
-export const Home = () => {
+export const Future = () => {
   const [detail, setDetail] = useState(null)
 
   return (
     <section id="bet-sec1">
       <div className="container-fluid">
         <div className="row bet-sec1-row1">
-          <div className="col-sm-9 bet-sec1-row1-div2">
+          <div className="col-sm-2 bet-sec1-row1-div1">
+            <a href="/future/league">League</a>
+            <a href="/future/sport">Sports</a>
+          </div>
+          <div className="col-sm-7 bet-sec1-row1-div2">
             <CarouselSection />
             {detail? <Detail detail={detail} /> : <>
               <div className="bet-sec1-div1-football-basketball-tennis-div">

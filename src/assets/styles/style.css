@@ -1,6 +1,5 @@
 body {
     font-family: 'Open Sans';
-    font-weight: 800;
     font-style: normal;
     user-select: none;
 }
@@ -90,15 +89,14 @@ button:focus {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    height: 30px;
-    line-height: 30px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
 }
 .col-sm-2.bet-sec1-row1-div1 {
     background: #171c22;
     padding-right: 0px;
     padding-left: 0px;
-    flex: 0 0 14.666667%;
-    max-width: 14.666667%;
 }
 .navbar-brand img {
     width: 163px;
@@ -948,6 +946,8 @@ input:focus {
     .col-sm-7.contact-sec1-div1 {
      object-fit: cover;
     background-image: url(../img/contact.jpg);
+    background-repeat: no-repeat;
+    /* background-position: top; */
     width: 100%;
 }
 #contact-sec1 h2 {

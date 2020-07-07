@@ -1,2 +1,5 @@
 export const HOME = '/'
+export const FUTURE = '/future'
+export const FUTUREMORE = '/future/*'
+export const CONTACT = '/contact'
 export const NOT_FOUND = '/not-found'

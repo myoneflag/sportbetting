@@ -77,6 +77,9 @@
     width: 100vw;
     z-index: 999;
    }
+   .bet-sec1-row1-div3-bet-slip-div .bl-box {
+       /* display: none; */
+   }
    .detail-table1 td {
     font-size: 11px;
 }

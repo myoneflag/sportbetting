@@ -10,6 +10,9 @@
 .MuiPaper-root .container {
     padding: 0;
 }
+.MuiPopover-paper {
+    box-shadow: 0 0px 4px 0px #0a1c2e;
+}
 .carousel-indicators .dot {
     box-sizing: content-box;
     -ms-flex: 0 1 auto;
@@ -38,4 +41,10 @@
 .carousel-control-prev span, .carousel-control-next span {
     font-size: 56px;
     margin-top: -28px;
+}
+.bet-sec1-row1-div3-Cypriot h2 {
+    margin: 0.83em 0;
+}
+.bet-sec1-row1-div3-btn-div span {
+    font-size: 12px;
 }

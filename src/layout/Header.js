@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 // import { useLocation, useHistory, Route } from 'react-router-dom'
 
 // import { Routes } from '../routes/routing'
-// import * as Paths from '../routes'
+import * as Paths from '../routes'
 import { country, date, month, year } from '../helpers'
 // import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -16,7 +16,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />
 })
 
-const Header = () => {
+const Header = ({currentPath}) => {
 
   const [open, setOpen] = useState(false)
   const [openSidebar, setOpenSidebar] = useState(false)
@@ -79,10 +79,13 @@ const Header = () => {
         <a className="navbar-brand" href="/"><img src={logo} alt="" /></a>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav">
-            <li className="active-menu active">
+            <li className={`active-menu ${currentPath === Paths.CONTACT? 'active':''}`}>
+              <a className="nav-link" href="/contact">Intro</a>
+            </li>
+            <li className={`active-menu ${currentPath === Paths.HOME? 'active':''}`}>
               <a className="nav-link" href="/">Live games</a>
             </li>
-            <li className="active-menu">
+            <li className={`active-menu ${currentPath === Paths.FUTURE? 'active':''}`}>
               <a className="nav-link" href="/future">Future games</a>
             </li>
           </ul>
