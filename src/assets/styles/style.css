@@ -586,7 +586,7 @@ div#carouselExampleIndicators img {
     border-radius: 2px;
     padding: 0px 10px;
     background: transparent!important;
-    border: 1px solid #424f56!important;
+    border: 1px solid #424f56;
     height: 32px;
     font-size: 12px;
     width: 100%;
@@ -736,15 +736,15 @@ footer {
 #sign-sec ::placeholder, #sign-sec select#exampleFormControlSelect1, .sign-submit {
     font-size: 12px;
 }
-.sign-submit {
+.sign-form input.sign-submit {
         letter-spacing: 0.5px;
     margin: 0rem 0rem 2rem 0rem;
-    width: 50%;
-    background: #79a83d;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 7px 20px;
+    width: 50% !important;
+    background: #79a83d !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 7px 20px !important;
 }
 .sign-sec-row1 h1 {
         font-weight: 600;
@@ -757,7 +757,7 @@ footer {
 	 border-radius: 2px;
 	 padding: 0px 10px;
     background: transparent!important;
-    border: 1px solid #424f56!important;
+    border: 1px solid #424f56;
     height: 32px;
     font-size: 12px;
     width: 50%;
@@ -792,7 +792,7 @@ footer {
     border-radius: 4px;
     padding: 0px 10px;
     background: transparent!important;
-    border: 1px solid #424f56!important;
+    border: 1px solid #424f56;
     height: 35px;
     font-size: 12px;
     width: 16.35%;
@@ -899,7 +899,7 @@ section#contact-sec1 .col-sm-5 {
     border-radius: 2px;
     padding: 0px 10px;
     background: transparent!important;
-    border: 1px solid #424f56!important;
+    border: 1px solid #424f56;
     height: 32px;
     font-size: 12px;
     width: 87%!important;
@@ -910,13 +910,13 @@ section#contact-sec1 .col-sm-5 {
 input.contact-submit {
     letter-spacing: 0.5px;
     margin: 0rem 0rem 2rem 0rem;
-    width: 87%;
-    background: #79a83d;
+    width: 87%!important;
+    background: #79a83d!important;
     color: white;
     border: none;
     border-radius: 4px;
     padding: 7px 20px;
-        font-size: 12px;
+    font-size: 12px;
 }
 
 .contact-sec1-form input#exampleInputMessage {
@@ -943,7 +943,7 @@ input:focus {
     display: flex;
 }
 
-    .col-sm-7.contact-sec1-div1 {
+.col-sm-7.contact-sec1-div1 {
      object-fit: cover;
     background-image: url(../img/contact.jpg);
     background-repeat: no-repeat;

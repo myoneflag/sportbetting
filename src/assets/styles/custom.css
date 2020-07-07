@@ -48,3 +48,12 @@
 .bet-sec1-row1-div3-btn-div span {
     font-size: 12px;
 }
+.required-text {
+    border: 1px solid tomato !important;
+}
+input.required-text {
+    color: tomato !important;
+}
+.required-text::placeholder {
+    color: tomato !important;
+}

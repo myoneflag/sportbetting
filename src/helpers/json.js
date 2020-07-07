@@ -1,5 +1,5 @@
 export const country = [
-  {value:"country", option:"Select Country"},
+  {value:"", option:"Select Country"},
   {value:"AF", option:"Afghanistan"},
   {value:"AX", option:"Aland Islands"},
   {value:"AL", option:"Albania"},
@@ -246,7 +246,7 @@ export const country = [
 ]
 
 export const date = [
-  {value:"DD", option:"Date"},
+  {value:"", option:"Date"},
   {value:"1", option:"1"},
   {value:"2", option:"2"},
   {value:"3", option:"3"},
@@ -282,7 +282,7 @@ export const date = [
 
 export const month = [
   
-  {value:"month", option:"Month"},
+  {value:"", option:"Month"},
   {value:"jan", option:"January"},
   {value:"feb", option:"February"},
   {value:"mar", option:"March"},
@@ -299,7 +299,7 @@ export const month = [
 
 export const year = [
   
-  {value:"year", option:"Year"},
+  {value:"", option:"Year"},
   {value:"1990", option:"1990"},
   {value:"1991", option:"1991"},
   {value:"1992", option:"1992"},
