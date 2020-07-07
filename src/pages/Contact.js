@@ -12,7 +12,7 @@ export const Contact = () => {
     e.preventDefault()
     if (!name) e.target.getElementsByClassName('name')[0].classList.add('required-text')
     else if (!email) e.target.getElementsByClassName('contact-email')[0].classList.add('required-text')
-    else if (!emailReg.test(email)) e.target.getElementsByClassName('contact-email')[0].classList.add('required-text')
+    else if (!emailReg.test(email.toLowerCase())) e.target.getElementsByClassName('contact-email')[0].classList.add('required-text')
     else if (!subject) e.target.getElementsByClassName('subject')[0].classList.add('required-text')
     else if (!message) e.target.getElementsByClassName('message')[0].classList.add('required-text')
     else console.log('contact...')

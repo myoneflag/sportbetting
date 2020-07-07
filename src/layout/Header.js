@@ -38,7 +38,7 @@ const Header = ({ currentPath }) => {
   const login = (e) => {
     e.preventDefault()
     if (!username) e.target.getElementsByClassName('username')[0].classList.add('required-text')
-    else if (!emailReg.test(username)) e.target.getElementsByClassName('username')[0].classList.add('required-text')
+    else if (!emailReg.test(username.toLowerCase())) e.target.getElementsByClassName('username')[0].classList.add('required-text')
     else if (!password) e.target.getElementsByClassName('password')[0].classList.add('required-text')
     else console.log('login...')
   }
@@ -52,7 +52,7 @@ const Header = ({ currentPath }) => {
     else if (!mm) e.target.getElementsByClassName('month')[0].classList.add('required-text')
     else if (!yy) e.target.getElementsByClassName('year')[0].classList.add('required-text')
     else if (!email) e.target.getElementsByClassName('email')[0].classList.add('required-text')
-    else if (!emailReg.test(email)) e.target.getElementsByClassName('email')[0].classList.add('required-text')
+    else if (!emailReg.test(email.toLowerCase())) e.target.getElementsByClassName('email')[0].classList.add('required-text')
     else if (!pwd) e.target.getElementsByClassName('pwd')[0].classList.add('required-text')
     else if (!confirmpwd) e.target.getElementsByClassName('confirm-pwd')[0].classList.add('required-text')
     else if (pwd !== confirmpwd) {
