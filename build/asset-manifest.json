@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/static/css/main.64d642e6.chunk.css",
-    "main.js": "/static/js/main.eee069cf.chunk.js",
+    "main.js": "/static/js/main.feb1e4d3.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.06cccdea.js",
     "static/css/2.ca3844b0.chunk.css": "/static/css/2.ca3844b0.chunk.css",
     "static/js/2.00834d43.chunk.js": "/static/js/2.00834d43.chunk.js",
     "index.html": "/index.html",
-    "precache-manifest.c9c556de7313bb7bdd98155db75091c6.js": "/precache-manifest.c9c556de7313bb7bdd98155db75091c6.js",
+    "precache-manifest.8e642b90bac05fba5b615209b3ad780b.js": "/precache-manifest.8e642b90bac05fba5b615209b3ad780b.js",
     "service-worker.js": "/service-worker.js",
     "static/js/2.00834d43.chunk.js.LICENSE.txt": "/static/js/2.00834d43.chunk.js.LICENSE.txt",
     "static/media/Basketbal.png": "/static/media/Basketbal.ff561fbc.png",
@@ -25,6 +25,6 @@
     "static/css/2.ca3844b0.chunk.css",
     "static/js/2.00834d43.chunk.js",
     "static/css/main.64d642e6.chunk.css",
-    "static/js/main.eee069cf.chunk.js"
+    "static/js/main.feb1e4d3.chunk.js"
   ]
 }

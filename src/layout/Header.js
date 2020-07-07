@@ -135,6 +135,7 @@ const Header = ({currentPath}) => {
           >
             <div id="mySidenav" className="sidenav">
               <span className="closebtn" onClick={handleCloseSidebar}>&times;</span>
+              <a href="/contact">Intro</a>
               <a href="/">Live games</a>
               <a href="/future">Future games</a>
             </div>
