@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 
 import * as Paths from '../routes'
-import { country, date, month, year } from '../helpers'
+import { country, date, month, year, apis } from '../helpers'
 // import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import Popover from '@material-ui/core/Popover'
 import Slide from '@material-ui/core/Slide'
+import axios from 'axios'
 
 
 const logo = require('../assets/img/logo.png')
@@ -14,16 +15,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />
 })
 
-const years = [{value:"", option:"Year"}]
+const years = [{ value: "", option: "Year" }]
 for (var i = year.from; i < year.to; i++) {
-  years.push({value:i, option:i})
+  years.push({ value: i, option: i })
 }
 
 const emailReg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/
 
 const Header = ({ currentPath }) => {
 
+  const [loggedin, setLoggedin] = useState(false)
   const [open, setOpen] = useState(false)
+  const [openContact, setOpenContact] = useState(false)
   const [openSidebar, setOpenSidebar] = useState(false)
   const [openLogin, setOpenLogin] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
@@ -39,13 +42,52 @@ const Header = ({ currentPath }) => {
   const [email, setEmail] = useState('')
   const [pwd, setPwd] = useState('')
   const [confirmpwd, setConfirmpwd] = useState('')
+  
+  const [name, setName] = useState('')
+  const [cemail, setCemail] = useState('')
+  const [subject, setSubject] = useState('')
+  const [message, setMessage] = useState('')
+
+  const contact = (e) => {
+    e.preventDefault()
+    if (!name) e.target.getElementsByClassName('name')[0].classList.add('required-text')
+    else if (!cemail) e.target.getElementsByClassName('contact-email')[0].classList.add('required-text')
+    else if (!emailReg.test(cemail.toLowerCase())) e.target.getElementsByClassName('contact-email')[0].classList.add('required-text')
+    else if (!subject) e.target.getElementsByClassName('subject')[0].classList.add('required-text')
+    else if (!message) e.target.getElementsByClassName('message')[0].classList.add('required-text')
+    else setOpenContact(false)
+  }
+
+  useEffect(() => {
+    const targets = document.getElementsByClassName('required-text')
+    for (var i = 0; i < targets.length; i++) {
+      targets[i].classList.remove('required-text')
+    }
+  }, [name, cemail, subject, message])
 
   const login = (e) => {
     e.preventDefault()
     if (!username) e.target.getElementsByClassName('username')[0].classList.add('required-text')
-    else if (!emailReg.test(username.toLowerCase())) e.target.getElementsByClassName('username')[0].classList.add('required-text')
     else if (!password) e.target.getElementsByClassName('password')[0].classList.add('required-text')
-    else console.log('login...')
+    else {
+      console.log('login...')
+      axios.post(process.env.REACT_APP_SERVER + apis.login, {
+        username: username,
+        password: password
+      })
+        .then((res) => {
+          if (res.data) {
+            setLoggedin(true)
+            setOpenLogin(false)
+            localStorage.setItem('access', res.data.access)
+            localStorage.setItem('refresh', res.data.refresh)
+            getUserData()
+          }
+        })
+        .catch((err) => {
+          console.log(err.response)
+        })
+    }
   }
 
   const signup = (e) => {
@@ -64,7 +106,7 @@ const Header = ({ currentPath }) => {
       e.target.getElementsByClassName('pwd')[0].classList.add('required-text')
       e.target.getElementsByClassName('confirm-pwd')[0].classList.add('required-text')
     }
-    else console.log('join...')
+    else setOpen(false)
   }
 
   useEffect(() => {
@@ -74,8 +116,75 @@ const Header = ({ currentPath }) => {
     }
   }, [username, password, cc, fname, lname, dd, mm, yy, email, pwd, confirmpwd])
 
+  useEffect(() => {
+    if (localStorage.getItem('refresh')) {
+      axios.post(process.env.REACT_APP_SERVER + apis.tokenrefresh, {
+        "refresh": localStorage.getItem('refresh')
+      })
+        .then((res) => {
+          if (res.data) {
+            localStorage.setItem('access', res.data.access)
+            setLoggedin(true)
+            setOpenLogin(false)
+            getUserData()
+          }
+        })
+        .catch((err) => {
+          console.log(err.response)
+        })
+    }
+  }, [])
+
+  const getUserData = () => {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem('access')
+      }
+    }
+    axios.get(process.env.REACT_APP_SERVER + apis.getselfbet, config)
+      .then((res) => {
+        if (res.statusText === "OK") {
+          console.log('bet', res.data)
+        }
+      })
+      .catch((err) => {
+        console.log('getselfbet', err.response)
+      })
+    axios.get(process.env.REACT_APP_SERVER + apis.getselfdeposit, config)
+      .then((res) => {
+        if (res.statusText === "OK") {
+          console.log('diposite', res.data)
+        }
+      })
+      .catch((err) => {
+        console.log(err.response)
+      })
+    // axios.get(process.env.REACT_APP_SERVER + apis.betslug.replace('{slug}', 'q3w4e5r6'), config)
+    //   .then((res) => {
+    //     if (res.statusText === "OK") {
+    //       console.log('bet-slug', res.data)
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log('betslug', err.response)
+    //   })
+  }
+
   const handleClickOpen = () => {
     setOpen(true)
+  }
+  const handleCloseContact = () => {
+    setOpenContact(false)
+  }
+
+  const handleOpenContact =() => {
+    handleCloseSidebar()
+    setOpenContact(true)
+  }
+
+  const handleClickLogout = () => {
+    localStorage.clear()
+    setLoggedin(false)
   }
 
   const handleClose = () => {
@@ -130,14 +239,14 @@ const Header = ({ currentPath }) => {
         <a className="navbar-brand" href="/"><img src={logo} alt="" /></a>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav">
-            <li className={`active-menu ${currentPath === Paths.CONTACT ? 'active' : ''}`}>
-              <a className="nav-link" href="/contact">Intro</a>
-            </li>
             <li className={`active-menu ${currentPath === Paths.HOME ? 'active' : ''}`}>
               <a className="nav-link" href="/">Live games</a>
             </li>
             <li className={`active-menu ${currentPath === Paths.FUTURE ? 'active' : ''}`}>
               <a className="nav-link" href="/future">Future games</a>
+            </li>
+            <li className={`active-menu ${currentPath === Paths.CONTACT ? 'active' : ''}`} onClick={() => setOpenContact(true)}>
+              <a className="nav-link">Contact us</a>
             </li>
           </ul>
         </div>
@@ -171,11 +280,21 @@ const Header = ({ currentPath }) => {
               </div>
             </div>
           </Popover>
-          <button type="button" className="join-btn" onClick={handleClickOpen}>Join</button>
-          <button type="button" className="login-btn" onClick={handleClickOpenLogin}>Log In</button>
-          {/* <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          {loggedin ?
+            <>
+              <button type="button" className="avatar">
+                <i className="fas fa-user"></i>
+              </button>
+              <button type="button" className="join-btn" onClick={handleClickLogout}>Log out</button>
+            </>
+            :
+            <>
+              <button type="button" className="join-btn" onClick={handleClickOpen}>Join</button>
+              <button type="button" className="login-btn" onClick={handleClickOpenLogin}>Log In</button>
+              {/* <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button> */}
+            </>}
           <Dialog
             open={openSidebar}
             onClose={handleCloseSidebar}
@@ -186,9 +305,9 @@ const Header = ({ currentPath }) => {
           >
             <div id="mySidenav" className="sidenav">
               <span className="closebtn" onClick={handleCloseSidebar}>&times;</span>
-              <a href="/contact">Intro</a>
               <a href="/">Live games</a>
               <a href="/future">Future games</a>
+              <a onClick={() => handleOpenContact()}>Contact us</a>
             </div>
           </Dialog>
           <span style={{ fontSize: '30px', cursor: 'pointer' }} onClick={handleClickOpenSidebar} className="sidebar-toggle">&#9776; </span>
@@ -210,7 +329,7 @@ const Header = ({ currentPath }) => {
                 </div>
                 <div className="modal-body">
                   <form onSubmit={(e) => login(e)}>
-                    <input className="username" type="text" name="name" placeholder="Email" onChange={(e) => setUsername(e.target.value)} />
+                    <input className="username" type="text" name="name" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
                     <input className="password" type="password" name="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                     <input type="submit" name="login" value="Log In" />
                   </form>
@@ -223,6 +342,45 @@ const Header = ({ currentPath }) => {
             </div>
           </div>
         </div>
+      </Dialog>
+      <Dialog
+        open={openContact}
+        fullWidth
+        id="contact-dialog"
+        onClose={handleCloseContact}
+        scroll={'body'}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <section id="contact-sec1">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-sm-7 contact-sec1-div1">
+              </div>
+              <div className="col-sm-5">
+                <h1>Contact Us</h1>
+                <h2>Have any question? We'd love to hear from you.</h2>
+                <form className="contact-sec1-form" onSubmit={(e) => contact(e)}>
+                  <div className="form-group">
+                    <input type="text" className="form-control name" id="exampleInputName" placeholder="Name" onChange={(e) => setName(e.target.value)} />
+                  </div>
+                  <div className="form-group">
+                    <input type="text" className="form-control contact-email" id="exampleInputEmail2" placeholder="Email" onChange={(e) => setCemail(e.target.value)} />
+                  </div>
+                  <div className="form-group">
+                    <input type="text" className="form-control subject" id="exampleInputSubject" placeholder="Subject" onChange={(e) => setSubject(e.target.value)} />
+                  </div>
+                  <div className="form-group">
+                    <textarea id="w3review" className="message" name="w3review" rows="4" cols="50" placeholder="Message" onChange={(e) => setMessage(e.target.value)}></textarea>
+                  </div>
+                  <div className="form-group">
+                    <input type="submit" name="submit" value="Submit" className="contact-submit" />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
       </Dialog>
       <Dialog
         open={open}

@@ -2,6 +2,9 @@
     vertical-align: top;
     max-width: calc(100% - 24px) !important;
 }
+#contact-dialog .MuiPaper-root {
+    vertical-align: middle;
+}
 .MuiPaper-root {
     box-shadow: none;
     background-color: transparent;

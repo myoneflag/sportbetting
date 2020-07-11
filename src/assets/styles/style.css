@@ -983,6 +983,12 @@ button.bet-slip-place-bet-btn:hover {
     border: none;
     padding-top: 9px;
 }
+button.avatar {
+    background: transparent;
+    border: none;
+    padding-top: 9px;
+    color: white;
+}
 .search-div .show {
     width: auto;
     display: block;
