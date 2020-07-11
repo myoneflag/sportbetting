@@ -8,7 +8,7 @@ export const Routes = () => {
     <Route exact path={ROUTES.HOME} component={() => <Home />} />
     <Route exact path={ROUTES.FUTURE} component={() => <Future />} />
     <Route exact path={ROUTES.FUTUREMORE} component={() => <Future />} />
-    <Route exact path={ROUTES.CONTACT} component={() => <Contact />} />
+    {/* <Route exact path={ROUTES.CONTACT} component={() => <Contact />} /> */}
     <Redirect to={ROUTES.NOT_FOUND} />
   </Switch>
 }
