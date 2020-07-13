@@ -68,11 +68,12 @@ const Header = ({ currentPath }) => {
   const login = (e) => {
     e.preventDefault()
     if (!username) e.target.getElementsByClassName('username')[0].classList.add('required-text')
+    else if (!emailReg.test(username.toLowerCase())) e.target.getElementsByClassName('username')[0].classList.add('required-text')
     else if (!password) e.target.getElementsByClassName('password')[0].classList.add('required-text')
     else {
       console.log('login...')
       axios.post(process.env.REACT_APP_SERVER + apis.login, {
-        username: username,
+        email: username,
         password: password
       })
         .then((res) => {
@@ -85,6 +86,7 @@ const Header = ({ currentPath }) => {
           }
         })
         .catch((err) => {
+          setOpenLogin(true)
           console.log(err.response)
         })
     }
@@ -329,7 +331,7 @@ const Header = ({ currentPath }) => {
                 </div>
                 <div className="modal-body">
                   <form onSubmit={(e) => login(e)}>
-                    <input className="username" type="text" name="name" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
+                    <input className="username" type="text" name="name" placeholder="Email" onChange={(e) => setUsername(e.target.value)} />
                     <input className="password" type="password" name="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                     <input type="submit" name="login" value="Log In" />
                   </form>
