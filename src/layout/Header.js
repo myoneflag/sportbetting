@@ -8,7 +8,7 @@ import Popover from '@material-ui/core/Popover'
 import Slide from '@material-ui/core/Slide'
 import axios from 'axios'
 
-
+const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_SERVER : process.env.REACT_APP_DEV_SERVER;
 const logo = require('../assets/img/logo.png')
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -72,7 +72,7 @@ const Header = ({ currentPath }) => {
     else if (!password) e.target.getElementsByClassName('password')[0].classList.add('required-text')
     else {
       console.log('login...')
-      axios.post(process.env.REACT_APP_SERVER + apis.login, {
+      axios.post(apiUrl + apis.login, {
         email: username,
         password: password
       })
@@ -120,7 +120,7 @@ const Header = ({ currentPath }) => {
 
   useEffect(() => {
     if (localStorage.getItem('refresh')) {
-      axios.post(process.env.REACT_APP_SERVER + apis.tokenrefresh, {
+      axios.post(apiUrl + apis.tokenrefresh, {
         "refresh": localStorage.getItem('refresh')
       })
         .then((res) => {
@@ -143,7 +143,7 @@ const Header = ({ currentPath }) => {
         Authorization: "Bearer " + localStorage.getItem('access')
       }
     }
-    axios.get(process.env.REACT_APP_SERVER + apis.getselfbet, config)
+    axios.get(apiUrl + apis.getselfbet, config)
       .then((res) => {
         if (res.statusText === "OK") {
           console.log('bet', res.data)
@@ -152,7 +152,7 @@ const Header = ({ currentPath }) => {
       .catch((err) => {
         console.log('getselfbet', err.response)
       })
-    axios.get(process.env.REACT_APP_SERVER + apis.getselfdeposit, config)
+    axios.get(apiUrl + apis.getselfdeposit, config)
       .then((res) => {
         if (res.statusText === "OK") {
           console.log('diposite', res.data)
@@ -161,7 +161,7 @@ const Header = ({ currentPath }) => {
       .catch((err) => {
         console.log(err.response)
       })
-    // axios.get(process.env.REACT_APP_SERVER + apis.betslug.replace('{slug}', 'q3w4e5r6'), config)
+    // axios.get(apiUrl + apis.betslug.replace('{slug}', 'q3w4e5r6'), config)
     //   .then((res) => {
     //     if (res.statusText === "OK") {
     //       console.log('bet-slug', res.data)
