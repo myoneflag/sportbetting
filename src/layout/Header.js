@@ -77,6 +77,7 @@ const Header = ({ currentPath }) => {
         password: password
       })
         .then((res) => {
+          console.log(res.data)
           if (res.data) {
             setLoggedin(true)
             setOpenLogin(false)
@@ -124,6 +125,7 @@ const Header = ({ currentPath }) => {
         "refresh": localStorage.getItem('refresh')
       })
         .then((res) => {
+          console.log(res.data)
           if (res.data) {
             localStorage.setItem('access', res.data.access)
             setLoggedin(true)
@@ -284,7 +286,7 @@ const Header = ({ currentPath }) => {
           </Popover>
           {loggedin ?
             <>
-              <p className="mb-0 user-balance">16.66€</p>
+              <p className="mb-0 user-balance">100000,88€</p>
               <button type="button" className="avatar">
                 <i className="fas fa-user"></i>
               </button>

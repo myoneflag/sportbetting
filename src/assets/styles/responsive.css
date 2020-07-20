@@ -335,7 +335,7 @@ nav#sidebar-wrapper, div#page-content-wrapper {
 }
 @media only screen and (max-width: 991px)  {
     .search-div button.dropdown-toggle, button.avatar {
-    margin-top: -5px;
+    margin-top: -7px;
 }
 
     .not-mobile {
@@ -348,6 +348,7 @@ nav#sidebar-wrapper, div#page-content-wrapper {
     
     .user-balance {
         margin-top: 4px;
+        font-size: 14px;
     }
     
     section#contact-sec1 .col-sm-5 {
