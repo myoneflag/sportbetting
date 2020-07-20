@@ -284,10 +284,11 @@ const Header = ({ currentPath }) => {
           </Popover>
           {loggedin ?
             <>
+              <p className="mb-0 user-balance">16.66€</p>
               <button type="button" className="avatar">
                 <i className="fas fa-user"></i>
               </button>
-              <button type="button" className="join-btn" onClick={handleClickLogout}>Log out</button>
+              <button type="button" className="join-btn not-mobile" onClick={handleClickLogout}>Log out</button>
             </>
             :
             <>
@@ -310,6 +311,7 @@ const Header = ({ currentPath }) => {
               <a href="/">Live games</a>
               <a href="/future">Future games</a>
               <a onClick={() => handleOpenContact()}>Contact us</a>
+              <a className="is-mobile" onClick={() => handleClickLogout()}>Log out</a>
             </div>
           </Dialog>
           <span style={{ fontSize: '30px', cursor: 'pointer' }} onClick={handleClickOpenSidebar} className="sidebar-toggle">&#9776; </span>

@@ -334,10 +334,22 @@ nav#sidebar-wrapper, div#page-content-wrapper {
 
 }
 @media only screen and (max-width: 991px)  {
-    .search-div button.dropdown-toggle {
+    .search-div button.dropdown-toggle, button.avatar {
     margin-top: -5px;
 }
- 
+
+    .not-mobile {
+        display: none !important;
+    }
+
+    .is-mobile {
+        display: block !important;
+    }
+    
+    .user-balance {
+        margin-top: 4px;
+    }
+    
     section#contact-sec1 .col-sm-5 {
     padding: 2% 17%!important;
 }

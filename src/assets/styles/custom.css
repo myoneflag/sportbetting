@@ -60,3 +60,16 @@ input.required-text {
 .required-text::placeholder {
     color: tomato !important;
 }
+
+.not-mobile {
+    display: block;
+}
+
+.is-mobile {
+    display: none;
+}
+.user-balance {
+    margin-top: 9px;
+    font-size: 16px;
+    margin-left: 5px;
+}
