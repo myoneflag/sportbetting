@@ -77,8 +77,8 @@ const Header = ({ currentPath }) => {
         password: password
       })
         .then((res) => {
-          console.log(res.data)
           if (res.data) {
+            console.log(res.data)
             setLoggedin(true)
             setOpenLogin(false)
             localStorage.setItem('access', res.data.access)
@@ -109,7 +109,31 @@ const Header = ({ currentPath }) => {
       e.target.getElementsByClassName('pwd')[0].classList.add('required-text')
       e.target.getElementsByClassName('confirm-pwd')[0].classList.add('required-text')
     }
-    else setOpen(false)
+    else {
+      setOpen(false)
+      console.log('signup...')
+      axios.post(apiUrl + apis.register, {
+        email: email,
+        password: pwd,
+        confirm_password: confirmpwd,
+        first_name: fname,
+        last_name: lname,
+        country: cc,
+        birth_date: yy + '-' + mm + '-' + dd
+      })
+        .then((res) => {
+          if (res.data) {
+            console.log('register success', res.data)
+            setOpenLogin(true)
+          } else {
+            setOpen(true)
+          }
+        })
+        .catch((err) => {
+          setOpen(true)
+          console.log(err.response)
+        })
+    }
   }
 
   useEffect(() => {
