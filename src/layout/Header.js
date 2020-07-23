@@ -23,8 +23,8 @@ const emailReg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/
 
 const Header = ({ currentPath, userData, updateUserData }) => {
 
-  console.log(userData)
-
+  // console.log(userData)
+  const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const [openContact, setOpenContact] = useState(false)
   const [openSidebar, setOpenSidebar] = useState(false)
@@ -72,11 +72,13 @@ const Header = ({ currentPath, userData, updateUserData }) => {
     else if (!password) e.target.getElementsByClassName('password')[0].classList.add('required-text')
     else {
       console.log('login...')
+      setLoading(true)
       axios.post(userData.apiUrl + apis.login, {
         email: username,
         password: password
       })
         .then((res) => {
+          setLoading(false)
           if (res.data) {
             console.log(res.data)
             setOpenLogin(false)
@@ -86,6 +88,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
           }
         })
         .catch((err) => {
+          setLoading(false)
           setOpenLogin(true)
         })
     }
@@ -110,6 +113,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
     else {
       setOpen(false)
       console.log('signup...')
+      setLoading(true)
       axios.post(userData.apiUrl + apis.register, {
         email: email,
         password: pwd,
@@ -120,6 +124,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
         birth_date: yy + '-' + mm + '-' + dd
       })
         .then((res) => {
+          setLoading(false)
           if (res.data) {
             console.log('register success', res.data)
             setOpenLogin(true)
@@ -128,6 +133,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
           }
         })
         .catch((err) => {
+          setLoading(false)
           setOpen(true)
           console.log(err.response)
         })
@@ -304,7 +310,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
                   <form onSubmit={(e) => login(e)}>
                     <input className="username" type="text" name="name" placeholder="Email" onChange={(e) => setUsername(e.target.value)} />
                     <input className="password" type="password" name="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-                    <input type="submit" name="login" value="Log In" />
+                    <input type="submit" name="login" value={loading?`Logging In...`:`Log In`} disabled={loading}/>
                   </form>
                   <a href="/fogotpassword" className="lost-login">Lost Login?</a>
                 </div>
@@ -441,7 +447,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
                           <div className="col-sm-12">
                             <div className="form-group">
                               <label htmlFor="exampleInputAnswer"></label>
-                              <input type="submit" name="submit" value="Sign Up" className="sign-submit" />
+                              <input type="submit" name="submit"  value={loading?`Signing Up...`:`Sign Up`} disabled={loading} className="sign-submit" />
                             </div>
                           </div>
                         </div>

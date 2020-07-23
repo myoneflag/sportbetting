@@ -54,7 +54,8 @@ export const Layout = () => {
         })
     } else {
       setLoading(false)
-      setuserData({loggedin: false})
+      userData.loggedin = false
+      setuserData({...userData})
     }
   }
 

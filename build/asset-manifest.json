@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.d87938a9.chunk.css",
-    "main.js": "/static/js/main.ee1d21a0.chunk.js",
+    "main.js": "/static/js/main.af173ffa.chunk.js",
     "runtime-main.js": "/static/js/runtime-main.06cccdea.js",
     "static/css/2.ca3844b0.chunk.css": "/static/css/2.ca3844b0.chunk.css",
-    "static/js/2.306e1b86.chunk.js": "/static/js/2.306e1b86.chunk.js",
+    "static/js/2.11b1e8a3.chunk.js": "/static/js/2.11b1e8a3.chunk.js",
     "index.html": "/index.html",
-    "precache-manifest.f40c1326a538bcb7444bd43c444a0d17.js": "/precache-manifest.f40c1326a538bcb7444bd43c444a0d17.js",
+    "precache-manifest.6ee2b9cdfef7737b83f457a99042e99b.js": "/precache-manifest.6ee2b9cdfef7737b83f457a99042e99b.js",
     "service-worker.js": "/service-worker.js",
-    "static/js/2.306e1b86.chunk.js.LICENSE.txt": "/static/js/2.306e1b86.chunk.js.LICENSE.txt",
+    "static/js/2.11b1e8a3.chunk.js.LICENSE.txt": "/static/js/2.11b1e8a3.chunk.js.LICENSE.txt",
     "static/media/Basketbal.png": "/static/media/Basketbal.ff561fbc.png",
     "static/media/font.css": "/static/media/OpenSans-SemiBoldItalic.da6f476d.woff2",
     "static/media/style.css": "/static/media/contact.1145ccb3.jpg",
@@ -23,8 +23,8 @@
   "entrypoints": [
     "static/js/runtime-main.06cccdea.js",
     "static/css/2.ca3844b0.chunk.css",
-    "static/js/2.306e1b86.chunk.js",
+    "static/js/2.11b1e8a3.chunk.js",
     "static/css/main.d87938a9.chunk.css",
-    "static/js/main.ee1d21a0.chunk.js"
+    "static/js/main.af173ffa.chunk.js"
   ]
 }
