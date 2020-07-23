@@ -4,5 +4,7 @@ export const apis = {
   register: 'api/registration/',
   getselfbet: 'users/self/bets/',
   getselfdeposit: 'users/self/deposits/',
+  getselfwithdrawal: 'users/self/withdrawals/',
+  getselfinfo: 'users/self/info/',
   betslug: 'events/{slug}/bets/'
 }

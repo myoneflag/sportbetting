@@ -8,7 +8,6 @@ import Popover from '@material-ui/core/Popover'
 import Slide from '@material-ui/core/Slide'
 import axios from 'axios'
 
-const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_SERVER : process.env.REACT_APP_DEV_SERVER;
 const logo = require('../assets/img/logo.png')
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -22,9 +21,10 @@ for (var i = year.from; i < year.to; i++) {
 
 const emailReg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/
 
-const Header = ({ currentPath }) => {
+const Header = ({ currentPath, userData, updateUserData }) => {
 
-  const [loggedin, setLoggedin] = useState(false)
+  console.log(userData)
+
   const [open, setOpen] = useState(false)
   const [openContact, setOpenContact] = useState(false)
   const [openSidebar, setOpenSidebar] = useState(false)
@@ -72,23 +72,21 @@ const Header = ({ currentPath }) => {
     else if (!password) e.target.getElementsByClassName('password')[0].classList.add('required-text')
     else {
       console.log('login...')
-      axios.post(apiUrl + apis.login, {
+      axios.post(userData.apiUrl + apis.login, {
         email: username,
         password: password
       })
         .then((res) => {
           if (res.data) {
             console.log(res.data)
-            setLoggedin(true)
             setOpenLogin(false)
             localStorage.setItem('access', res.data.access)
             localStorage.setItem('refresh', res.data.refresh)
-            getUserData()
+            updateUserData(true)
           }
         })
         .catch((err) => {
           setOpenLogin(true)
-          console.log(err.response)
         })
     }
   }
@@ -112,7 +110,7 @@ const Header = ({ currentPath }) => {
     else {
       setOpen(false)
       console.log('signup...')
-      axios.post(apiUrl + apis.register, {
+      axios.post(userData.apiUrl + apis.register, {
         email: email,
         password: pwd,
         confirm_password: confirmpwd,
@@ -143,61 +141,6 @@ const Header = ({ currentPath }) => {
     }
   }, [username, password, cc, fname, lname, dd, mm, yy, email, pwd, confirmpwd])
 
-  useEffect(() => {
-    if (localStorage.getItem('refresh')) {
-      axios.post(apiUrl + apis.tokenrefresh, {
-        "refresh": localStorage.getItem('refresh')
-      })
-        .then((res) => {
-          console.log(res.data)
-          if (res.data) {
-            localStorage.setItem('access', res.data.access)
-            setLoggedin(true)
-            setOpenLogin(false)
-            getUserData()
-          }
-        })
-        .catch((err) => {
-          console.log(err.response)
-        })
-    }
-  }, [])
-
-  const getUserData = () => {
-    const config = {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem('access')
-      }
-    }
-    axios.get(apiUrl + apis.getselfbet, config)
-      .then((res) => {
-        if (res.statusText === "OK") {
-          console.log('bet', res.data)
-        }
-      })
-      .catch((err) => {
-        console.log('getselfbet', err.response)
-      })
-    axios.get(apiUrl + apis.getselfdeposit, config)
-      .then((res) => {
-        if (res.statusText === "OK") {
-          console.log('diposite', res.data)
-        }
-      })
-      .catch((err) => {
-        console.log(err.response)
-      })
-    // axios.get(apiUrl + apis.betslug.replace('{slug}', 'q3w4e5r6'), config)
-    //   .then((res) => {
-    //     if (res.statusText === "OK") {
-    //       console.log('bet-slug', res.data)
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log('betslug', err.response)
-    //   })
-  }
-
   const handleClickOpen = () => {
     setOpen(true)
   }
@@ -212,7 +155,7 @@ const Header = ({ currentPath }) => {
 
   const handleClickLogout = () => {
     localStorage.clear()
-    setLoggedin(false)
+    updateUserData()
   }
 
   const handleClose = () => {
@@ -308,9 +251,9 @@ const Header = ({ currentPath }) => {
               </div>
             </div>
           </Popover>
-          {loggedin ?
+          {userData.loggedin ?
             <>
-              <p className="mb-0 user-balance">100000,88€</p>
+              <p className="mb-0 user-balance">{userData.info && userData.info.balance ? userData.info.balance.toLocaleString() : 0}€</p>
               <button type="button" className="avatar">
                 <i className="fas fa-user"></i>
               </button>

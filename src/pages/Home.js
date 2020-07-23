@@ -5,7 +5,7 @@ import { BetSection } from '../components/layouts/bet'
 import { BetSlip } from '../components/layouts/betslip'
 import { Detail } from '../components/layouts/detail'
 
-export const Home = () => {
+export const Home = ({userData, updateUserData}) => {
   const [detail, setDetail] = useState(null)
 
   return (
