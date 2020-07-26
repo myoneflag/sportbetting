@@ -5,6 +5,8 @@ import { Routes } from '../routes/routing'
 
 import { makeStyles } from "@material-ui/core"
 import Grid from '@material-ui/core/Grid'
+import Snackbar from '@material-ui/core/Snackbar'
+import MuiAlert from '@material-ui/lab/Alert'
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Header from './Header'
 import Footer from './Footer'
@@ -40,6 +42,7 @@ export const Layout = () => {
 
   const [userData, setuserData] = useState({apiUrl})
   const [loading, setLoading] = useState(true)
+  const [alert, setAlert] = useState(null)
 
   const updateUserData = (verified) => {
     verified? getUserData() : verifyToken()
@@ -64,11 +67,12 @@ export const Layout = () => {
         .catch((err) => {
           setLoading(false)
           console.log(err.response)
+          setAlert({type: err.response? 'warning':'error', msg: err.response? 'Token expired. Login again':'error establishing a connection'})
         })
     } else {
       setLoading(false)
       userData.loggedin = false
-      setuserData({...userData})
+      // setuserData({...userData})
     }
   }
 
@@ -88,6 +92,7 @@ export const Layout = () => {
       })
       .catch((err) => {
         console.log('info', err.response)
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user info':'error establishing a connection'})
       })
     await axios.get(apiUrl + apis.getselfbet, config)
       .then((res) => {
@@ -98,6 +103,7 @@ export const Layout = () => {
       })
       .catch((err) => {
         console.log('bets', err.response)
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user self bet':'error establishing a connection'})
       })
     await axios.get(apiUrl + apis.getselfdeposit, config)
       .then((res) => {
@@ -108,6 +114,7 @@ export const Layout = () => {
       })
       .catch((err) => {
         console.log(`deposits`, err.response)
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user self deposits':'error establishing a connection'})
       })
     await axios.get(apiUrl + apis.getselfwithdrawal, config)
       .then((res) => {
@@ -118,6 +125,7 @@ export const Layout = () => {
       })
       .catch((err) => {
         console.log('withdrawal', err.response)
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user self withdrawal':'error establishing a connection'})
       })
     setLoading(false)
     setuserData({...userData})
@@ -130,6 +138,11 @@ export const Layout = () => {
     </Grid>:<Grid container>
       <Header currentPath={currentPath} updateUserData={updateUserData} userData={userData}/>
       <Routes updateUserData={updateUserData} userData={userData}/>
+      {alert && <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'center'}} open={alert.msg && alert.type? true: false} autoHideDuration={6000} onClose={() => setAlert(null)}>
+        <MuiAlert elevation={6} variant="filled" onClose={() => setAlert(null)} severity='error'>
+          {alert.msg}
+        </MuiAlert>
+      </Snackbar>}
       <Footer />
     </Grid>
   )

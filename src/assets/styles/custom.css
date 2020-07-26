@@ -10,10 +10,13 @@
 #contact-dialog .MuiPaper-root {
     vertical-align: middle;
 }
-.MuiPaper-root {
-    box-shadow: none;
+.MuiDialog-container .MuiPaper-root {
     background-color: transparent;
+    box-shadow: none;
     margin: 0;
+}
+.MuiSnackbar-root {
+    min-width: 300px;
 }
 .MuiPaper-root .container {
     padding: 0;

@@ -5,6 +5,8 @@ import { country, date, month, year, apis } from '../helpers'
 // import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import Popover from '@material-ui/core/Popover'
+import Snackbar from '@material-ui/core/Snackbar'
+import MuiAlert from '@material-ui/lab/Alert'
 import Slide from '@material-ui/core/Slide'
 import axios from 'axios'
 
@@ -48,6 +50,8 @@ const Header = ({ currentPath, userData, updateUserData }) => {
   const [subject, setSubject] = useState('')
   const [message, setMessage] = useState('')
 
+  const [alert, setAlert] = useState(null)
+
   const contact = (e) => {
     e.preventDefault()
     if (!name) e.target.getElementsByClassName('name')[0].classList.add('required-text')
@@ -81,6 +85,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
           setLoading(false)
           if (res.data) {
             console.log(res.data)
+            setAlert({type: 'success', msg: 'Login successful'})
             setOpenLogin(false)
             localStorage.setItem('access', res.data.access)
             localStorage.setItem('refresh', res.data.refresh)
@@ -90,6 +95,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
         .catch((err) => {
           setLoading(false)
           setOpenLogin(true)
+          setAlert({type: 'error', msg: err.response? 'Wrong credentials':'error establishing a connection'})
         })
     }
   }
@@ -127,6 +133,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
           setLoading(false)
           if (res.data) {
             console.log('register success', res.data)
+            setAlert({type: 'success', msg: 'Registeration successful'})
             setOpenLogin(true)
           } else {
             setOpen(true)
@@ -136,6 +143,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
           setLoading(false)
           setOpen(true)
           console.log(err.response)
+          setAlert({type: 'error', msg: err.response? 'Wrong credentials':'error establishing a connection'})
         })
     }
   }
@@ -161,6 +169,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
 
   const handleClickLogout = () => {
     localStorage.clear()
+    setAlert({type: 'warning', msg: 'Logged out'})
     updateUserData()
   }
 
@@ -460,6 +469,11 @@ const Header = ({ currentPath, userData, updateUserData }) => {
           </div>
         </div>
       </Dialog>
+      {alert && <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'center'}} open={alert.msg && alert.type? true: false} autoHideDuration={6000} onClose={() => setAlert(null)}>
+        <MuiAlert elevation={6} variant="filled" onClose={() => setAlert(null)} severity={alert.type}>
+          {alert.msg}
+        </MuiAlert>
+      </Snackbar>}
     </div>
   )
 }
