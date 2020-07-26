@@ -263,7 +263,11 @@ button.bet-sec1-row1-div3-btn1 {
     padding-left: 15px;
     padding-top: 15px;
 }
-
+.bet-sec1-row1-div3-match-result span {
+    float: right;
+    color: #ffea00;
+    margin-right: 15px;
+}
 
 .bet-sec1-row1-div3-pick-draw h6 {
     color: white;

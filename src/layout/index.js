@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { apis } from '../helpers'
 import { Routes } from '../routes/routing'
 
+import { makeStyles } from "@material-ui/core"
 import Grid from '@material-ui/core/Grid'
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Header from './Header'
@@ -19,7 +20,20 @@ const logo = require('../assets/img/logo.png')
 
 const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_SERVER : process.env.REACT_APP_DEV_SERVER;
 
+const useStyles = makeStyles((theme) => ({
+  loading: {
+    width: `300px`,
+    height: `2px`,
+    backgroundColor: `transparent`,
+    '& div': {
+      backgroundColor: '#ffea00'
+    }
+  }
+}))
+
 export const Layout = () => {
+
+  const classes = useStyles()
 
   let location = useLocation()
   const currentPath = location.pathname
@@ -41,7 +55,6 @@ export const Layout = () => {
         "refresh": localStorage.getItem('refresh')
       })
         .then((res) => {
-          setLoading(false)
           // console.log(`loggedin?`, res.data)
           if (res.data) {
             localStorage.setItem('access', res.data.access)
@@ -49,11 +62,9 @@ export const Layout = () => {
           }
         })
         .catch((err) => {
-          setLoading(false)
           console.log(err.response)
         })
     } else {
-      setLoading(false)
       userData.loggedin = false
       setuserData({...userData})
     }
@@ -106,13 +117,14 @@ export const Layout = () => {
       .catch((err) => {
         console.log('withdrawal', err.response)
       })
+    setLoading(false)
     setuserData({...userData})
   }
 
   return (
     loading? <Grid container justify="center" alignItems="center" className="loading" direction="column">
       <img src={logo} alt="" />
-      <LinearProgress style={{width: `300px`, height: `2px`}}/>
+      <LinearProgress className={classes.loading}/>
     </Grid>:<Grid container>
       <Header currentPath={currentPath} updateUserData={updateUserData} userData={userData}/>
       <Routes updateUserData={updateUserData} userData={userData}/>

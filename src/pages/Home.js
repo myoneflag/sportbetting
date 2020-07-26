@@ -28,7 +28,7 @@ export const Home = ({userData, updateUserData}) => {
             </>}
           </div>
           <div className="col-sm-3 bet-sec1-row1-div3">
-            <BetSlip />
+            <BetSlip userData={userData} updateUserData={updateUserData} />
           </div>
         </div>
       </div>
