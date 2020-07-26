@@ -95,7 +95,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
         .catch((err) => {
           setLoading(false)
           setOpenLogin(true)
-          setAlert({type: 'error', msg: err.response? 'Wrong credentials':'error establishing a connection'})
+          setAlert({type: 'error', msg: err.response? 'Wrong credentials':'Error establishing a connection'})
         })
     }
   }
@@ -143,7 +143,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
           setLoading(false)
           setOpen(true)
           console.log(err.response)
-          setAlert({type: 'error', msg: err.response? 'Wrong credentials':'error establishing a connection'})
+          setAlert({type: 'error', msg: err.response? 'Wrong credentials':'Error establishing a connection'})
         })
     }
   }

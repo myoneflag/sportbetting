@@ -67,7 +67,7 @@ export const Layout = () => {
         .catch((err) => {
           setLoading(false)
           console.log(err.response)
-          setAlert({type: err.response? 'warning':'error', msg: err.response? 'Token expired. Login again':'error establishing a connection'})
+          setAlert({type: err.response? 'warning':'error', msg: err.response? 'Token expired. Login again':'Error establishing a connection'})
         })
     } else {
       setLoading(false)
@@ -92,7 +92,7 @@ export const Layout = () => {
       })
       .catch((err) => {
         console.log('info', err.response)
-        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user info':'error establishing a connection'})
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user info':'Error establishing a connection'})
       })
     await axios.get(apiUrl + apis.getselfbet, config)
       .then((res) => {
@@ -103,7 +103,7 @@ export const Layout = () => {
       })
       .catch((err) => {
         console.log('bets', err.response)
-        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user self bet':'error establishing a connection'})
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user self bet':'Error establishing a connection'})
       })
     await axios.get(apiUrl + apis.getselfdeposit, config)
       .then((res) => {
@@ -114,7 +114,7 @@ export const Layout = () => {
       })
       .catch((err) => {
         console.log(`deposits`, err.response)
-        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user self deposits':'error establishing a connection'})
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user self deposits':'Error establishing a connection'})
       })
     await axios.get(apiUrl + apis.getselfwithdrawal, config)
       .then((res) => {
@@ -125,7 +125,7 @@ export const Layout = () => {
       })
       .catch((err) => {
         console.log('withdrawal', err.response)
-        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user self withdrawal':'error establishing a connection'})
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user self withdrawal':'Error establishing a connection'})
       })
     setLoading(false)
     setuserData({...userData})
