@@ -62,9 +62,11 @@ export const Layout = () => {
           }
         })
         .catch((err) => {
+          setLoading(false)
           console.log(err.response)
         })
     } else {
+      setLoading(false)
       userData.loggedin = false
       setuserData({...userData})
     }
