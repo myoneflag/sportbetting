@@ -131,44 +131,94 @@ export const Layout = () => {
     setuserData({...userData})
   }
 
-  const submitDeposit = (code) => {
-    const config = {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem('access')
-      }
+  function getValidToken () {
+    if (localStorage.getItem('refresh')) {
+      axios.post(apiUrl + apis.tokenrefresh, {
+        "refresh": localStorage.getItem('refresh')
+      })
+        .then((res) => {
+          if (res.data) {
+            localStorage.setItem('access', res.data.access)
+            return true
+          } else return false
+        })
+        .catch((err) => {
+          setAlert({type: err.response? 'warning':'error', msg: err.response? 'Token expired. Login again':'Error establishing a connection'})
+          return false
+        })
+    } else {
+      return false
     }
-    axios.post(apiUrl + apis.prepaidCardDeposit, {code}, config)
-      .then((res) => {
-        if (res.statusText === "OK") {
-          console.log(res.data)
-          setAlert({type: 'success', msg: 'Deposit successfully'})
-          getUserData()
-        }
+  }
+
+  const submitDeposit = (code) => {
+    if (localStorage.getItem('refresh')) {
+      axios.post(apiUrl + apis.tokenrefresh, {
+        "refresh": localStorage.getItem('refresh')
       })
-      .catch((err) => {
-        console.log('info', err.response)
-        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to deposit':'Error establishing a connection'})
-      })
+        .then((res) => {
+          if (res.data) {
+            localStorage.setItem('access', res.data.access)
+            const config = {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem('access')
+              }
+            }
+            axios.post(apiUrl + apis.prepaidCardDeposit, {code}, config)
+              .then((res) => {
+                if (res.data) {
+                  // console.log(res.data)
+                  setAlert({type: 'success', msg: 'Deposit successfully'})
+                  getUserData()
+                }
+              })
+              .catch((err) => {
+                // console.log('info', err.response)
+                setAlert({type: err.response?'warning':'error', msg: err.response? err.response.data.code[0]:'Error establishing a connection'})
+              })            
+          }
+        })
+        .catch((err) => {
+          setAlert({type: err.response? 'warning':'error', msg: err.response? 'Token expired. Login again':'Error establishing a connection'})
+        })
+    } else {
+      setAlert({type: 'warning', msg: 'Token expired. Login again'})
+    }
   }
 
   const submiWithdrawal = (amount) => {
-    const config = {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem('access')
-      }
+    if (localStorage.getItem('refresh')) {
+      axios.post(apiUrl + apis.tokenrefresh, {
+        "refresh": localStorage.getItem('refresh')
+      })
+        .then((res) => {
+          if (res.data) {
+            localStorage.setItem('access', res.data.access)
+            const config = {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem('access')
+              }
+            }
+            axios.post(apiUrl + apis.withdrawals, {amount}, config)
+              .then((res) => {
+                if (res.data) {
+                  // console.log(res.data)
+                  setAlert({type: 'success', msg: 'Withdrawal successfully'})
+                  getUserData()
+                }
+              })
+              .catch((err) => {
+                // console.log('info', err.response)
+                setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to withdrawal':'Error establishing a connection'})
+              })          
+          }
+        })
+        .catch((err) => {
+          setAlert({type: err.response? 'warning':'error', msg: err.response? 'Token expired. Login again':'Error establishing a connection'})
+        })
+    } else {
+      setAlert({type: 'warning', msg: 'Token expired. Login again'})
     }
-    axios.post(apiUrl + apis.withdrawals, {amount}, config)
-      .then((res) => {
-        if (res.statusText === "OK") {
-          console.log(res.data)
-          setAlert({type: 'success', msg: 'Withdrawal successfully'})
-          getUserData()
-        }
-      })
-      .catch((err) => {
-        console.log('info', err.response)
-        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to withdrawal':'Error establishing a connection'})
-      })
   }
 
   return (

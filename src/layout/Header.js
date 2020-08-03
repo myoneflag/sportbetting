@@ -29,9 +29,40 @@ const useStyles = makeStyles((theme) => ({
   },
   bgModal: {
     '& .MuiPaper-root': {
-      backgroundColor: '#fff !important',
+      backgroundColor: '#29343a!important',
+      color: '#aaa !important',
       '& input:focus': {
-        color: 'black !important'
+        color: '#818181 !important',
+        background: 'transparent!important'
+      },
+      '& .MuiInput-underline:before': {
+        borderBottom: '1px solid rgb(244 245 245)'
+      },
+      '& .MuiDialogContentText-root, & .MuiInputLabel-root': {
+        color: 'white !important'
+      },
+      '& button': {
+        letterSpacing: '0.5px',
+        border: 'none!important',
+        color: 'white',
+        textTransform: 'capitalize !important'
+      }
+    }
+  },
+  modalButton: {
+    '&:not([disabled])': {
+      background: '#79a83d!important'
+    }
+  },
+  settingPopover: {
+    '& .MuiPopover-paper': {
+      backgroundColor: '#29343a!important',
+      '& .MuiList-padding, & .MuiListItem-root': {
+        paddingTop: '0 !important',
+        paddingBottom: '0 !important'
+      },
+      '& .MuiListItemText-root': {
+        color: 'white'
       }
     }
   }
@@ -231,6 +262,26 @@ const Header = ({ currentPath, userData, updateUserData, submitDeposit, submiWit
     setAnchorEl(null)
   }
 
+  const handleSubmitWithdrawal = () => {
+    setOpenWithdrawal(false)
+    submiWithdrawal(withdrawalAmount)
+  }
+
+  const handleSubmitDeposit = () => {
+    setOpenDeposit(false)
+    submitDeposit(depositCode)
+  }
+
+  const handleDeposit = () => {
+    setAnchorElSetting(null)
+    setOpenDeposit(true)
+  }
+
+  const handleWithdrawal = () => {
+    setAnchorElSetting(null)
+    setOpenWithdrawal(true)
+  }
+
   const openSearch = Boolean(anchorEl)
   const id = openSearch ? 'simple-popover' : undefined
 
@@ -318,13 +369,14 @@ const Header = ({ currentPath, userData, updateUserData, submitDeposit, submiWit
                   vertical: 'top',
                   horizontal: 'right',
                 }}
+                className={classes.settingPopover}
               >
                 <List component="nav" aria-label="secondary mailbox folders">
                   <ListItem button>
-                    <ListItemText primary="Deposit" onClick={() => setOpenDeposit(true)} />
+                    <ListItemText primary="Deposit" onClick={handleDeposit} />
                   </ListItem>
                   <ListItem button>
-                    <ListItemText primary="Withdrawal" onClick={() => setOpenWithdrawal(true)} />
+                    <ListItemText primary="Withdrawal" onClick={handleWithdrawal} />
                   </ListItem>
                 </List>
               </Popover>
@@ -377,7 +429,7 @@ const Header = ({ currentPath, userData, updateUserData, submitDeposit, submiWit
           <Button onClick={() => setOpenDeposit(false)}>
             Cancel
           </Button>
-          <Button onClick={() => submitDeposit(depositCode)} color="primary" variant="contained" disabled={depositCode.toString().length !== 16}>
+          <Button onClick={handleSubmitDeposit} color="primary" variant="contained" disabled={depositCode.toString().length !== 16} className={classes.modalButton}>
             Deposit
           </Button>
         </DialogActions>
@@ -402,7 +454,7 @@ const Header = ({ currentPath, userData, updateUserData, submitDeposit, submiWit
           <Button onClick={() => setOpenWithdrawal(false)}>
             Cancel
           </Button>
-          <Button onClick={() => submiWithdrawal(withdrawalAmount)} color="primary" variant="contained" disabled={withdrawalAmount <= 0}>
+          <Button onClick={handleSubmitWithdrawal} color="primary" variant="contained" disabled={withdrawalAmount <= 0} className={classes.modalButton}>
             Withdrawal
           </Button>
         </DialogActions>
