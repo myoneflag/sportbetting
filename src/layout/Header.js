@@ -359,7 +359,7 @@ const Header = ({ currentPath, userData, updateUserData, submitDeposit, submiWit
         </div>
       </nav>
       <Dialog open={openDeposit} onClose={() => setOpenDeposit(false)} aria-labelledby="form-dialog-title" className={classes.bgModal}>
-        <DialogTitle id="form-dialog-title">Deposit</DialogTitle>
+        <DialogTitle>Deposit</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Please enter prepaid card deposit code
@@ -384,7 +384,7 @@ const Header = ({ currentPath, userData, updateUserData, submitDeposit, submiWit
         </DialogActions>
       </Dialog>
       <Dialog open={openWithdrawal} onClose={() => setOpenWithdrawal(false)} aria-labelledby="form-dialog-title" className={classes.bgModal}>
-        <DialogTitle id="form-dialog-title">Withdrawal</DialogTitle>
+        <DialogTitle>Withdrawal</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Please enter withdrawal amount
