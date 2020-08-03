@@ -3,8 +3,10 @@ export const apis = {
   tokenrefresh: 'api/token/refresh/',
   register: 'api/registration/',
   getselfbet: 'users/self/bets/',
-  getselfdeposit: 'users/self/deposits/',
-  getselfwithdrawal: 'users/self/withdrawals/',
+  getselfdeposit: 'deposits/',
+  getselfwithdrawal: 'withdrawals/',
   getselfinfo: 'users/self/info/',
-  betslug: 'events/{slug}/bets/'
+  betslug: 'events/{slug}/bets/',
+  prepaidCardDeposit: 'prepaid-card-deposit/',
+  withdrawals: 'withdrawals/'
 }

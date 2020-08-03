@@ -48,6 +48,12 @@ export const Layout = () => {
     verified? getUserData() : verifyToken()
   }
 
+  const config = {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem('access')
+    }
+  }
+
   useEffect(() => {
     verifyToken()
   }, [])
@@ -78,11 +84,6 @@ export const Layout = () => {
 
   const getUserData = async () => {
     userData.loggedin = true
-    const config = {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem('access')
-      }
-    }
     await axios.get(apiUrl + apis.getselfinfo, config)
       .then((res) => {
         if (res.statusText === "OK") {
@@ -131,12 +132,42 @@ export const Layout = () => {
     setuserData({...userData})
   }
 
+  const submitDeposit = (code) => {
+    axios.post(apiUrl + apis.prepaidCardDeposit, {code}, config)
+      .then((res) => {
+        if (res.statusText === "OK") {
+          console.log(res.data)
+          setAlert({type: 'success', msg: 'Deposit successfully'})
+          getUserData()
+        }
+      })
+      .catch((err) => {
+        console.log('info', err.response)
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to deposit':'Error establishing a connection'})
+      })
+  }
+
+  const submiWithdrawal = (amount) => {
+    axios.post(apiUrl + apis.withdrawals, {amount}, config)
+      .then((res) => {
+        if (res.statusText === "OK") {
+          console.log(res.data)
+          setAlert({type: 'success', msg: 'Withdrawal successfully'})
+          getUserData()
+        }
+      })
+      .catch((err) => {
+        console.log('info', err.response)
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to withdrawal':'Error establishing a connection'})
+      })
+  }
+
   return (
     loading? <Grid container justify="center" alignItems="center" className="loading" direction="column">
       <img src={logo} alt="" />
       <LinearProgress className={classes.loading}/>
     </Grid>:<Grid container>
-      <Header currentPath={currentPath} updateUserData={updateUserData} userData={userData}/>
+      <Header currentPath={currentPath} updateUserData={updateUserData} userData={userData} submitDeposit={submitDeposit} submiWithdrawal={submiWithdrawal} />
       <Routes updateUserData={updateUserData} userData={userData}/>
       {alert && <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'center'}} open={alert.msg && alert.type? true: false} autoHideDuration={6000} onClose={() => setAlert(null)}>
         <MuiAlert elevation={6} variant="filled" onClose={() => setAlert(null)} severity='error'>

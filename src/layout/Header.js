@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
+import { makeStyles } from '@material-ui/core/styles'
 import * as Paths from '../routes'
 import { country, date, month, year, apis } from '../helpers'
 // import Button from '@material-ui/core/Button'
@@ -7,10 +8,35 @@ import Dialog from '@material-ui/core/Dialog'
 import Popover from '@material-ui/core/Popover'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
 import Slide from '@material-ui/core/Slide'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import TextField from '@material-ui/core/TextField'
 import axios from 'axios'
 
 const logo = require('../assets/img/logo.png')
+
+const useStyles = makeStyles((theme) => ({
+  typography: {
+    padding: theme.spacing(2),
+  },
+  bgModal: {
+    '& .MuiPaper-root': {
+      backgroundColor: '#fff !important',
+      '& input:focus': {
+        color: 'black !important'
+      }
+    }
+  }
+}))
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="right" ref={ref} {...props} />
@@ -23,8 +49,8 @@ for (var i = year.from; i < year.to; i++) {
 
 const emailReg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/
 
-const Header = ({ currentPath, userData, updateUserData }) => {
-
+const Header = ({ currentPath, userData, updateUserData, submitDeposit, submiWithdrawal }) => {
+  const classes = useStyles()
   // console.log(userData)
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
@@ -32,6 +58,11 @@ const Header = ({ currentPath, userData, updateUserData }) => {
   const [openSidebar, setOpenSidebar] = useState(false)
   const [openLogin, setOpenLogin] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorElSetting, setAnchorElSetting] = useState(null)
+  const [openDeposit, setOpenDeposit] = useState(false)
+  const [depositCode, setDepositCode] = useState('')
+  const [openWithdrawal, setOpenWithdrawal] = useState(false)
+  const [withdrawalAmount, setWithdrawalAmount] = useState(0)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -44,7 +75,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
   const [email, setEmail] = useState('')
   const [pwd, setPwd] = useState('')
   const [confirmpwd, setConfirmpwd] = useState('')
-  
+
   const [name, setName] = useState('')
   const [cemail, setCemail] = useState('')
   const [subject, setSubject] = useState('')
@@ -85,7 +116,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
           setLoading(false)
           if (res.data) {
             console.log(res.data)
-            setAlert({type: 'success', msg: 'Login successful'})
+            setAlert({ type: 'success', msg: 'Login successful' })
             setOpenLogin(false)
             localStorage.setItem('access', res.data.access)
             localStorage.setItem('refresh', res.data.refresh)
@@ -95,7 +126,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
         .catch((err) => {
           setLoading(false)
           setOpenLogin(true)
-          setAlert({type: 'error', msg: err.response? 'Wrong credentials':'Error establishing a connection'})
+          setAlert({ type: 'error', msg: err.response ? 'Wrong credentials' : 'Error establishing a connection' })
         })
     }
   }
@@ -133,7 +164,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
           setLoading(false)
           if (res.data) {
             console.log('register success', res.data)
-            setAlert({type: 'success', msg: 'Registeration successful'})
+            setAlert({ type: 'success', msg: 'Registeration successful' })
             setOpenLogin(true)
           } else {
             setOpen(true)
@@ -143,7 +174,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
           setLoading(false)
           setOpen(true)
           console.log(err.response)
-          setAlert({type: 'error', msg: err.response? 'Wrong credentials':'Error establishing a connection'})
+          setAlert({ type: 'error', msg: err.response ? 'Wrong credentials' : 'Error establishing a connection' })
         })
     }
   }
@@ -162,14 +193,14 @@ const Header = ({ currentPath, userData, updateUserData }) => {
     setOpenContact(false)
   }
 
-  const handleOpenContact =() => {
+  const handleOpenContact = () => {
     handleCloseSidebar()
     setOpenContact(true)
   }
 
   const handleClickLogout = () => {
     localStorage.clear()
-    setAlert({type: 'warning', msg: 'Logged out'})
+    setAlert({ type: 'warning', msg: 'Logged out' })
     updateUserData()
   }
 
@@ -203,6 +234,9 @@ const Header = ({ currentPath, userData, updateUserData }) => {
 
   const openSearch = Boolean(anchorEl)
   const id = openSearch ? 'simple-popover' : undefined
+
+  const openSetting = Boolean(anchorElSetting);
+  const idSetting = openSetting ? 'setting-popover' : undefined;
 
   return (
     <div>
@@ -269,9 +303,32 @@ const Header = ({ currentPath, userData, updateUserData }) => {
           {userData.loggedin ?
             <>
               <p className="mb-0 user-balance">{userData.info && userData.info.balance ? userData.info.balance.toLocaleString() : 0}€</p>
-              <button type="button" className="avatar">
+              <button aria-describedby={idSetting} type="button" className="avatar" onClick={(event) => setAnchorElSetting(event.currentTarget)}>
                 <i className="fas fa-user"></i>
               </button>
+              <Popover
+                id={idSetting}
+                open={openSetting}
+                anchorEl={anchorElSetting}
+                onClose={() => setAnchorElSetting(null)}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+              >
+                <List component="nav" aria-label="secondary mailbox folders">
+                  <ListItem button>
+                    <ListItemText primary="Deposit" onClick={() => setOpenDeposit(true)} />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemText primary="Withdrawal" onClick={() => setOpenWithdrawal(true)} />
+                  </ListItem>
+                </List>
+              </Popover>
               <button type="button" className="join-btn not-mobile" onClick={handleClickLogout}>Log out</button>
             </>
             :
@@ -301,6 +358,56 @@ const Header = ({ currentPath, userData, updateUserData }) => {
           <span style={{ fontSize: '30px', cursor: 'pointer' }} onClick={handleClickOpenSidebar} className="sidebar-toggle">&#9776; </span>
         </div>
       </nav>
+      <Dialog open={openDeposit} onClose={() => setOpenDeposit(false)} aria-labelledby="form-dialog-title" className={classes.bgModal}>
+        <DialogTitle id="form-dialog-title">Deposit</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please enter prepaid card deposit code
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="code"
+            label="Code"
+            type="number"
+            fullWidth
+            onChange={(e) => setDepositCode(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDeposit(false)}>
+            Cancel
+          </Button>
+          <Button onClick={() => submitDeposit(depositCode)} color="primary" variant="contained" disabled={depositCode.toString().length !== 16}>
+            Deposit
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openWithdrawal} onClose={() => setOpenWithdrawal(false)} aria-labelledby="form-dialog-title" className={classes.bgModal}>
+        <DialogTitle id="form-dialog-title">Withdrawal</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please enter withdrawal amount
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="amount"
+            label="Amount"
+            type="number"
+            fullWidth
+            onChange={(e) => setWithdrawalAmount(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenWithdrawal(false)}>
+            Cancel
+          </Button>
+          <Button onClick={() => submiWithdrawal(withdrawalAmount)} color="primary" variant="contained" disabled={withdrawalAmount <= 0}>
+            Withdrawal
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={openLogin}
         onClose={handleCloseLogin}
@@ -319,7 +426,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
                   <form onSubmit={(e) => login(e)}>
                     <input className="username" type="text" name="name" placeholder="Email" onChange={(e) => setUsername(e.target.value)} />
                     <input className="password" type="password" name="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-                    <input type="submit" name="login" value={loading?`Logging In...`:`Log In`} disabled={loading}/>
+                    <input type="submit" name="login" value={loading ? `Logging In...` : `Log In`} disabled={loading} />
                   </form>
                   <a href="/fogotpassword" className="lost-login">Lost Login?</a>
                 </div>
@@ -456,7 +563,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
                           <div className="col-sm-12">
                             <div className="form-group">
                               <label htmlFor="exampleInputAnswer"></label>
-                              <input type="submit" name="submit"  value={loading?`Signing Up...`:`Sign Up`} disabled={loading} className="sign-submit" />
+                              <input type="submit" name="submit" value={loading ? `Signing Up...` : `Sign Up`} disabled={loading} className="sign-submit" />
                             </div>
                           </div>
                         </div>
@@ -469,7 +576,7 @@ const Header = ({ currentPath, userData, updateUserData }) => {
           </div>
         </div>
       </Dialog>
-      {alert && <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'center'}} open={alert.msg && alert.type? true: false} autoHideDuration={6000} onClose={() => setAlert(null)}>
+      {alert && <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={alert.msg && alert.type ? true : false} autoHideDuration={6000} onClose={() => setAlert(null)}>
         <MuiAlert elevation={6} variant="filled" onClose={() => setAlert(null)} severity={alert.type}>
           {alert.msg}
         </MuiAlert>
