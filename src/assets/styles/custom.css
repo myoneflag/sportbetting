@@ -24,6 +24,9 @@
 .MuiPopover-paper {
     box-shadow: 0 0px 4px 0px #0a1c2e;
 }
+.MuiDialog-scrollPaper {
+    align-items: flex-start !important;
+}
 .carousel-indicators .dot {
     box-sizing: content-box;
     -ms-flex: 0 1 auto;

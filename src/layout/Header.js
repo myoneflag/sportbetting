@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiPaper-root': {
       backgroundColor: '#29343a!important',
       color: '#aaa !important',
+      margin: '1.75rem auto !important',
       '& input:focus': {
         color: '#818181 !important',
         background: 'transparent!important'
@@ -112,6 +113,8 @@ const Header = ({ currentPath, userData, updateUserData, submitDeposit, submiWit
   const [message, setMessage] = useState('')
 
   const [alert, setAlert] = useState(null)
+
+  const userBalance = userData.info && userData.info.balance ? userData.info.balance : 0
 
   const contact = (e) => {
     e.preventDefault()
@@ -352,7 +355,7 @@ const Header = ({ currentPath, userData, updateUserData, submitDeposit, submiWit
           </Popover>
           {userData.loggedin ?
             <>
-              <p className="mb-0 user-balance">{userData.info && userData.info.balance ? userData.info.balance.toLocaleString() : 0}€</p>
+              <p className="mb-0 user-balance">{userBalance.toLocaleString()}€</p>
               <button aria-describedby={idSetting} type="button" className="avatar" onClick={(event) => setAnchorElSetting(event.currentTarget)}>
                 <i className="fas fa-user"></i>
               </button>
@@ -454,7 +457,7 @@ const Header = ({ currentPath, userData, updateUserData, submitDeposit, submiWit
           <Button onClick={() => setOpenWithdrawal(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSubmitWithdrawal} color="primary" variant="contained" disabled={withdrawalAmount <= 0} className={classes.modalButton}>
+          <Button onClick={handleSubmitWithdrawal} color="primary" variant="contained" disabled={withdrawalAmount <= 0 || userBalance < withdrawalAmount} className={classes.modalButton}>
             Withdrawal
           </Button>
         </DialogActions>
