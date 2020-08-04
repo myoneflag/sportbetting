@@ -355,7 +355,7 @@ const Header = ({ currentPath, userData, updateUserData, submitDeposit, submiWit
           </Popover>
           {userData.loggedin ?
             <>
-              <p className="mb-0 user-balance">{userBalance.toLocaleString()}€</p>
+              <p className="mb-0 user-balance">{userBalance.toFixed(2).toLocaleString()}€</p>
               <button aria-describedby={idSetting} type="button" className="avatar" onClick={(event) => setAnchorElSetting(event.currentTarget)}>
                 <i className="fas fa-user"></i>
               </button>
