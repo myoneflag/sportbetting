@@ -80,8 +80,10 @@ for (var i = year.from; i < year.to; i++) {
 
 const emailReg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/
 
+const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_SERVER : process.env.REACT_APP_DEV_SERVER;
+
 const Header = (props) => {
-  const { currentPath, userData, updateUserData, submitDeposit, submiWithdrawal } = props
+  const { currentPath, userData, updateUserData } = props // submitDeposit, submiWithdrawal
   const classes = useStyles()
   // console.log(userData)
   const [loading, setLoading] = useState(false)
@@ -115,7 +117,9 @@ const Header = (props) => {
 
   const [alert, setAlert] = useState(null)
 
-  const userBalance = userData.info && userData.info.balance ? userData.info.balance : 0
+  const [uData, setUData] = useState(userData.info)
+
+  const userBalance = uData && uData.balance ? uData.balance : 0
 
   const contact = (e) => {
     e.preventDefault()
@@ -275,6 +279,97 @@ const Header = (props) => {
     setOpenDeposit(false)
     submitDeposit(depositCode)
   }
+  
+  const getUserDataOnly = async () => {
+    userData.loggedin = true
+    const config = {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem('access')
+      }
+    }
+    await axios.get(apiUrl + apis.getselfinfo, config)
+      .then((res) => {
+        if (res.statusText === "OK") {
+          // console.log('info', res.data)
+          setUData(res.data)
+        }
+      })
+      .catch((err) => {
+        console.log('info', err.response)
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user info':'Error establishing a connection'})
+      })
+  }
+
+  const submitDeposit = (code) => {
+    if (localStorage.getItem('refresh')) {
+      axios.post(apiUrl + apis.tokenrefresh, {
+        "refresh": localStorage.getItem('refresh')
+      })
+        .then((res) => {
+          if (res.data) {
+            localStorage.setItem('access', res.data.access)
+            const config = {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem('access')
+              }
+            }
+            axios.post(apiUrl + apis.prepaidCardDeposit, {code}, config)
+              .then((res) => {
+                if (res.data) {
+                  // console.log(res.data)
+                  setAlert({type: 'success', msg: 'Deposit successfully'})
+                  getUserDataOnly()
+                }
+              })
+              .catch((err) => {
+                // console.log('info', err.response)
+                setAlert({type: err.response?'warning':'error', msg: err.response? err.response.data.code[0]:'Error establishing a connection'})
+              })            
+          }
+        })
+        .catch((err) => {
+          setAlert({type: err.response? 'warning':'error', msg: err.response? 'Token expired. Login again':'Error establishing a connection'})
+        })
+    } else {
+      setAlert({type: 'warning', msg: 'Token expired. Login again'})
+    }
+  }
+
+  const submiWithdrawal = (amount) => {
+    if (localStorage.getItem('refresh')) {
+      axios.post(apiUrl + apis.tokenrefresh, {
+        "refresh": localStorage.getItem('refresh')
+      })
+        .then((res) => {
+          if (res.data) {
+            localStorage.setItem('access', res.data.access)
+            const config = {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem('access')
+              }
+            }
+            axios.post(apiUrl + apis.withdrawals, {amount}, config)
+              .then((res) => {
+                if (res.data) {
+                  // console.log(res.data)
+                  setAlert({type: 'success', msg: 'Withdrawal successfully'})
+                  getUserDataOnly()
+                }
+              })
+              .catch((err) => {
+                // console.log('info', err.response)
+                setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to withdrawal':'Error establishing a connection'})
+              })          
+          }
+        })
+        .catch((err) => {
+          setAlert({type: err.response? 'warning':'error', msg: err.response? 'Token expired. Login again':'Error establishing a connection'})
+        })
+    } else {
+      setAlert({type: 'warning', msg: 'Token expired. Login again'})
+    }
+  }
+
 
   const handleDeposit = () => {
     setAnchorElSetting(null)
