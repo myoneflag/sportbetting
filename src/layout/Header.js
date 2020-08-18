@@ -80,7 +80,8 @@ for (var i = year.from; i < year.to; i++) {
 
 const emailReg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/
 
-const Header = ({ currentPath, userData, updateUserData, submitDeposit, submiWithdrawal }) => {
+const Header = (props) => {
+  const { currentPath, userData, updateUserData, submitDeposit, submiWithdrawal } = props
   const classes = useStyles()
   // console.log(userData)
   const [loading, setLoading] = useState(false)

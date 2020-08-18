@@ -5,7 +5,8 @@ import { BetSection } from '../components/layouts/bet'
 import { BetSlip } from '../components/layouts/betslip'
 import { Detail } from '../components/layouts/detail'
 
-export const Home = ({userData, updateUserData}) => {
+export const Home = (props) => {
+  const {userData, updateUserData} = props
   const [detail, setDetail] = useState(null)
 
   return (
@@ -28,7 +29,7 @@ export const Home = ({userData, updateUserData}) => {
             </>}
           </div>
           <div className="col-sm-3 bet-sec1-row1-div3">
-            <BetSlip userData={userData} updateUserData={updateUserData} />
+            <BetSlip {...props} />
           </div>
         </div>
       </div>

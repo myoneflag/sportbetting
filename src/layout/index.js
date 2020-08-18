@@ -76,7 +76,7 @@ export const Layout = () => {
     }
   }
 
-  const getUserData = async () => {
+  const getUserData = async (flag) => {
     userData.loggedin = true
     const config = {
       headers: {
@@ -88,6 +88,7 @@ export const Layout = () => {
         if (res.statusText === "OK") {
           // console.log('info', res.data)
           userData.info = res.data
+          console.log(res.data)
         }
       })
       .catch((err) => {
@@ -131,6 +132,27 @@ export const Layout = () => {
     setuserData({...userData})
   }
 
+  
+  const getUserDataOnly = async () => {
+    userData.loggedin = true
+    const config = {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem('access')
+      }
+    }
+    await axios.get(apiUrl + apis.getselfinfo, config)
+      .then((res) => {
+        if (res.statusText === "OK") {
+          // console.log('info', res.data)
+          setuserData({...userData, ...{info: res.data}})
+        }
+      })
+      .catch((err) => {
+        console.log('info', err.response)
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user info':'Error establishing a connection'})
+      })
+  }
+
   function getValidToken () {
     if (localStorage.getItem('refresh')) {
       axios.post(apiUrl + apis.tokenrefresh, {
@@ -169,7 +191,7 @@ export const Layout = () => {
                 if (res.data) {
                   // console.log(res.data)
                   setAlert({type: 'success', msg: 'Deposit successfully'})
-                  getUserData()
+                  getUserDataOnly()
                 }
               })
               .catch((err) => {
@@ -204,7 +226,7 @@ export const Layout = () => {
                 if (res.data) {
                   // console.log(res.data)
                   setAlert({type: 'success', msg: 'Withdrawal successfully'})
-                  getUserData()
+                  getUserDataOnly()
                 }
               })
               .catch((err) => {
@@ -221,13 +243,15 @@ export const Layout = () => {
     }
   }
 
+  const props = { currentPath, updateUserData, userData, submitDeposit, submiWithdrawal }
+
   return (
     loading? <Grid container justify="center" alignItems="center" className="loading" direction="column">
       <img src={logo} alt="" />
       <LinearProgress className={classes.loading}/>
     </Grid>:<Grid container>
-      <Header currentPath={currentPath} updateUserData={updateUserData} userData={userData} submitDeposit={submitDeposit} submiWithdrawal={submiWithdrawal} />
-      <Routes updateUserData={updateUserData} userData={userData}/>
+      <Header {...props} />
+      <Routes {...props} />
       {alert && <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={alert.msg && alert.type ? true : false} autoHideDuration={6000} onClose={() => setAlert(null)}>
         <MuiAlert elevation={6} variant="filled" onClose={() => setAlert(null)} severity={alert.type}>
           {alert.msg}

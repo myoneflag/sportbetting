@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
-export const BetSlip = ({userData, updateUserData}) => {
+export const BetSlip = (props) => {
+  const {userData, updateUserData} = props
 
   const betslips = userData.bets
 
