@@ -40,17 +40,46 @@ export const Layout = () => {
   let location = useLocation()
   const currentPath = location.pathname
 
-  const [userData, setuserData] = useState({apiUrl})
+  const [userData, setUserData] = useState({apiUrl})
   const [loading, setLoading] = useState(true)
   const [alert, setAlert] = useState(null)
+  const [eventData, setEventData] = useState(null)
 
   const updateUserData = (verified) => {
     verified? getUserData() : verifyToken()
   }
 
   useEffect(() => {
+    getEvent()
     verifyToken()
   }, [])
+
+  const getEvent = async () => {
+    await axios.get(apiUrl + apis.getEvents + '?sport_name=Football')
+      .then((res) => {
+        if (res.statusText === "OK") {
+          setEventData([...new Set(res.data.map(e => e.league))].map(league => {
+            let tempEvents = res.data.filter(event => event.league === league)
+            tempEvents.map((event, index) => {
+              let readtEvent = []
+              try {
+                if (Array.isArray(event.market_results)) readtEvent = [...event.market_results]
+                else if (Array.isArray(JSON.parse(event.market_results.replace(/\'/g, '"')))) readtEvent = [...JSON.parse(event.market_results.replace(/\'/g, '"'))]
+              } catch (err) {
+                console.log(err)
+              }
+              tempEvents[index].market_results = [...readtEvent]
+            })
+            return {league, events: tempEvents}
+          }))
+        }
+      })
+      .catch((err) => {
+        console.log('info', err.response)
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get events info':'Error establishing a connection'})
+      })
+
+  }
 
   const verifyToken = () => {
     if (localStorage.getItem('refresh')) {
@@ -72,11 +101,12 @@ export const Layout = () => {
     } else {
       setLoading(false)
       userData.loggedin = false
-      // setuserData({...userData})
+      // setUserData({...userData})
     }
   }
 
-  const getUserData = async (flag) => {
+  const getUserData = async () => {
+    let userData = {}
     userData.loggedin = true
     const config = {
       headers: {
@@ -129,7 +159,7 @@ export const Layout = () => {
         setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user self withdrawal':'Error establishing a connection'})
       })
     setLoading(false)
-    setuserData({...userData})
+    setUserData({...userData})
   }
 
   
@@ -144,7 +174,7 @@ export const Layout = () => {
       .then((res) => {
         if (res.statusText === "OK") {
           // console.log('info', res.data)
-          setuserData({...userData, ...{info: res.data}})
+          setUserData({...userData, ...{info: res.data}})
         }
       })
       .catch((err) => {
@@ -243,7 +273,7 @@ export const Layout = () => {
     }
   }
 
-  const props = { currentPath, updateUserData, userData, submitDeposit, submiWithdrawal }
+  const props = { currentPath, updateUserData, userData, submitDeposit, submiWithdrawal, eventData }
 
   return (
     loading? <Grid container justify="center" alignItems="center" className="loading" direction="column">

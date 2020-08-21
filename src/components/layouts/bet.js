@@ -1,6 +1,13 @@
 import * as React from 'react'
 
-const BetTable = ({ data, id }) => {
+function formatDate (date) {
+  const d = new Date(date)
+  let mm = d.getMinutes()
+  if(mm<10) mm='0'+mm; 
+  return `${d.getMonth()}/${d.getDate()}/${d.getFullYear()} ${d.getHours()}:${mm}`
+}
+
+const BetTable = ({ data, id, target, eventId }) => {
   const openTab = (id) => {
     const targets = document.getElementsByClassName('table-box1-containerTab')
     for (var i = 0; i < targets.length; i++) {
@@ -21,19 +28,19 @@ const BetTable = ({ data, id }) => {
   }
 
   return (
-    <>
+    data.visibility === "Visible" && <>
       <table className="table table1 home-table">
         <tbody>
           <tr>
-            <td className="table1-td1">{data.title}</td>
+            <td className="table1-td1">{target === 0? "Home": target === 1? "Draw":"Away"}</td>
             <td className="table1-td2">
               <button className="tab-btn1 table-box1-column lay_back_btn" id={'bf'+id} onClick={() => openTab('f'+id)}>
-                <p>{data.from.value}</p>
-                <p>€ {data.from.price}</p>
+                <p>{data.odds}</p>
+                <p>€ 0</p>
               </button>
               <button className="tab-btn1 table-box2-column lay_back_btn" id={'bt'+id} onClick={() => openTab('t'+id)}>
-                <p>{data.to.value}</p>
-                <p>€ {data.to.price}</p>
+                <p>{data.odds}</p>
+                <p>€ 0</p>
               </button>
             </td>
           </tr>
@@ -41,7 +48,7 @@ const BetTable = ({ data, id }) => {
       </table>
       <div id={'f'+id} className="blue-table-box1 table-box1-containerTab" style={{ display: "none" }}>
         <div className="bet1-number table-box1-div1">
-          <h1>{data.from.desc}</h1>
+          <h1> Back {data.name.value}</h1>
           <span className="minus" onClick={(e) => decrease(e)}>-</span>
           <input type="number" min="0" />
           <span className="plus" onClick={(e) => increase(e)}>+</span>
@@ -58,7 +65,7 @@ const BetTable = ({ data, id }) => {
       </div>
       <div id={'t'+id} className="red-table-box1 table-box1-containerTab" style={{ display: "none" }}>
         <div className="bet1-number table-box1-div1">
-          <h1>Lay(Bet against) Taipei Red Loins - Match Odds</h1>
+          <h1> Lay {data.name.value}</h1>
           <span className="minus" onClick={(e) => decrease(e)}>-</span>
           <input type="number" min="0" />
           <span className="plus" onClick={(e) => increase(e)}>+</span>
@@ -76,6 +83,7 @@ const BetTable = ({ data, id }) => {
 }
 
 export const BetSection = ({ betData, id }) => {
+
   return (
     <div className="bet-sec1-lay-back-div">
       <div className="bet-sec1-green-div">
@@ -84,7 +92,7 @@ export const BetSection = ({ betData, id }) => {
             <tr>
               <td className="bet-sec1-league-td">
                 <a href="/bet-detail">
-                  <h1>{betData.title}</h1>
+                  <h1>{betData.league}</h1>
                 </a>
               </td>
               <td className="bet-sec1-lay-td">
@@ -97,15 +105,17 @@ export const BetSection = ({ betData, id }) => {
           </tbody>
         </table>
       </div>
-      <div className="bet-sec1-light-green-div">
-        <a href="/bet-detail">
-          <h5>{betData.subtitle}</h5>
-        </a>
-        <h6>{betData.timestamp}</h6>
-      </div>
-      {
-        betData.subdata.map((tdata, index) => <BetTable key={index} data={tdata} id={id+''+index}/>)
-      }
+      {betData.events.map((event, idex) => <div key={event.id}>
+        <div className="bet-sec1-light-green-div">
+          <a href="/bet-detail">
+            <h5>{event.title}</h5>
+          </a>
+          <h6>{formatDate(event.date)}</h6>
+        </div>
+        {
+          event.market_results.map((tdata, index) => <BetTable key={index} data={tdata} id={idex+''+id+''+index} eventId={event.id} target={index} />)
+        }
+      </div>)}
     </div>
   )
 }

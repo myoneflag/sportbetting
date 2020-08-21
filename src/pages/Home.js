@@ -6,7 +6,7 @@ import { BetSlip } from '../components/layouts/betslip'
 import { Detail } from '../components/layouts/detail'
 
 export const Home = (props) => {
-  const {userData, updateUserData} = props
+  const {userData, updateUserData, eventData} = props
   const [detail, setDetail] = useState(null)
 
   return (
@@ -17,13 +17,13 @@ export const Home = (props) => {
             <CarouselSection />
             {detail? <Detail detail={detail} /> : <>
               <div className="bet-sec1-div1-football-basketball-tennis-div">
-                <button className="bet-sec1-div1-football" onClick={() => setDetail('football')}>Football</button>
+                <button className="bet-sec1-div1-football active" onClick={() => setDetail('football')}>Football</button>
                 <button className="bet-sec1-div1-basketball" onClick={() => setDetail('basketball')}>Basketball</button>
                 <button className="bet-sec1-div1-tennis" onClick={() => setDetail('tennis')}>Tennis</button>
               </div>
               <div id="lay_back_myDIV">
                 {
-                  bet.map((betd, index) => <BetSection betData={betd} key={index} id={index} />)
+                  eventData && eventData.map((betd, index) => <BetSection betData={betd} key={index} id={index} />)
                 }
               </div>
             </>}

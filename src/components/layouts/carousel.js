@@ -3,8 +3,8 @@ import OwlCarousel from 'react-owl-carousel'
 import 'owl.carousel/dist/assets/owl.carousel.css'
 import 'owl.carousel/dist/assets/owl.theme.default.css'
 
-const sport = require('../../assets/img/sport.png')
-const basketbal = require('../../assets/img/Basketbal.png')
+const sport = require('../../assets/img/sport.jpg')
+const basketbal = require('../../assets/img/Basketbal.jpg')
 const betting = require('../../assets/img/tennis-betting-2018-min-1024x415.jpg')
 const tennis = require('../../assets/img/tennis-main.jpg')
 

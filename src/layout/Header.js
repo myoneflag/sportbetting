@@ -121,6 +121,10 @@ const Header = (props) => {
 
   const userBalance = uData && uData.balance ? uData.balance : 0
 
+  useEffect(() => {
+    setUData(userData.info)
+  }, [userData])
+
   const contact = (e) => {
     e.preventDefault()
     if (!name) e.target.getElementsByClassName('name')[0].classList.add('required-text')

@@ -390,6 +390,7 @@ button.tab-btn1 {
     cursor: pointer;
     font-weight: 700;
     margin: 0 3px;
+    min-width: 44px;
 }
 button.tab-btn1:hover
 {   
@@ -497,6 +498,9 @@ td.table1-td1 {
     border-radius: 2px;
     border-top: 1px solid rgb(118, 140, 91);
     margin: 0 3px;
+}
+.bet-sec1-div1-football-basketball-tennis-div button.active {
+    background: #171c22;
 }
 table.table.table1 tr td {
         cursor: pointer;

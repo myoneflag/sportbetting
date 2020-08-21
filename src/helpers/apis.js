@@ -8,5 +8,6 @@ export const apis = {
   getselfinfo: 'users/self/info/',
   betslug: 'events/{slug}/bets/',
   prepaidCardDeposit: 'prepaid-card-deposit/',
-  withdrawals: 'withdrawals/'
+  withdrawals: 'withdrawals/',
+  getEvents: 'events/'
 }
