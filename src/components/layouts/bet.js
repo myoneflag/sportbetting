@@ -44,8 +44,7 @@ const BetTable = ({ betPice }) => {
   }
 
   const submitBet = async (side, id, id2) => {
-    console.log(side, target, event.slug, tdata.odds, document.getElementById(id).value)
-    if (!document.getElementById(id).value || isNaN(document.getElementById(id).value)) return
+    if (!document.getElementById(id).value || isNaN(document.getElementById(id).value) || parseFloat(document.getElementById(id).value) <= 0) return
     postEvent({selection: target, side, odds: tdata.odds, stake: parseFloat(document.getElementById(id).value)})
     document.getElementById(id).value = 0
     document.getElementById(id2).value = 0
