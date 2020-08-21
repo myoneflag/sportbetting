@@ -32,7 +32,7 @@ const BetTable = ({ data, id, target, eventId }) => {
       <table className="table table1 home-table">
         <tbody>
           <tr>
-            <td className="table1-td1">{target === 0? "Home": target === 1? "Draw":"Away"}</td>
+            <td className="table1-td1">{target === 0? "Home": target === 1? "Away": target === 2? "Draw":"Upcoming"}</td>
             <td className="table1-td2">
               <button className="tab-btn1 table-box1-column lay_back_btn" id={'bf'+id} onClick={() => openTab('f'+id)}>
                 <p>{data.odds}</p>
