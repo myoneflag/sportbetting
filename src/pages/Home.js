@@ -6,7 +6,7 @@ import { BetSlip } from '../components/layouts/betslip'
 import { Detail } from '../components/layouts/detail'
 
 export const Home = (props) => {
-  const {userData, updateUserData, eventData} = props
+  const {userData, updateUserData, eventData, getBetDataOnly} = props
   const [detail, setDetail] = useState(null)
 
   return (
@@ -23,7 +23,7 @@ export const Home = (props) => {
               </div>
               <div id="lay_back_myDIV">
                 {
-                  eventData && eventData.map((betd, index) => <BetSection betData={betd} key={index} id={index} />)
+                  eventData && eventData.map((betd, index) => <BetSection betData={betd} key={index} id={index} getBetDataOnly={getBetDataOnly} />)
                 }
               </div>
             </>}

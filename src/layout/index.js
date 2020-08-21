@@ -61,11 +61,13 @@ export const Layout = () => {
           setEventData([...new Set(res.data.map(e => e.league))].map(league => {
             let tempEvents = res.data.filter(event => event.league === league)
             tempEvents.map((event, index) => {
+              console.log(event.match_result)
               let readtEvent = []
               try {
                 if (Array.isArray(event.market_results)) readtEvent = [...event.market_results]
                 else if (Array.isArray(JSON.parse(event.market_results.replace(/\'/g, '"')))) readtEvent = [...JSON.parse(event.market_results.replace(/\'/g, '"'))]
               } catch (err) {
+                console.log(event.market_results)
                 console.log(err)
               }
               tempEvents[index].market_results = [...readtEvent]
@@ -128,7 +130,7 @@ export const Layout = () => {
     await axios.get(apiUrl + apis.getselfbet, config)
       .then((res) => {
         if (res.statusText === "OK") {
-          // console.log('bet', res.data)
+          console.log('bet', res.data)
           userData.bets = res.data
         }
       })
@@ -162,6 +164,24 @@ export const Layout = () => {
     setUserData({...userData})
   }
 
+  const getBetDataOnly = async () => {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem('access')
+      }
+    }
+    await axios.get(apiUrl + apis.getselfbet, config)
+      .then((res) => {
+        if (res.statusText === "OK") {
+          console.log('bet', res.data)
+          userData.bets = res.data
+        }
+      })
+      .catch((err) => {
+        console.log('bets', err.response)
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user self bet':'Error establishing a connection'})
+      })
+  }
   
   const getUserDataOnly = async () => {
     userData.loggedin = true
@@ -273,7 +293,7 @@ export const Layout = () => {
     }
   }
 
-  const props = { currentPath, updateUserData, userData, submitDeposit, submiWithdrawal, eventData }
+  const props = { currentPath, updateUserData, userData, submitDeposit, submiWithdrawal, eventData, getBetDataOnly }
 
   return (
     loading? <Grid container justify="center" alignItems="center" className="loading" direction="column">

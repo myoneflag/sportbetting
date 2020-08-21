@@ -20,6 +20,7 @@ export const CarouselSection = () => {
         dotClass="dot"
         navContainerClass="navs-container"
         navClass={['carousel-control-prev', 'carousel-control-next']}
+        autoplayTimeout={2000}
       >
         <div className="item">
           <img className="d-block w-100" src={sport} alt="First slide" />

@@ -9,5 +9,7 @@ export const apis = {
   betslug: 'events/{slug}/bets/',
   prepaidCardDeposit: 'prepaid-card-deposit/',
   withdrawals: 'withdrawals/',
-  getEvents: 'events/'
+  getEvents: 'events/',
+  postEvent: 'events/{slug}/bets/',
+  betEvent: 'events/{slug}/bets/'
 }

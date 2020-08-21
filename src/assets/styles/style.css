@@ -462,6 +462,7 @@ button.tab-btn1 p {
 }
 td.table1-td1 {
     color: white;
+    text-transform: capitalize;
 }
 td.bet-sec1-back-td {
     width: 5.5%;
