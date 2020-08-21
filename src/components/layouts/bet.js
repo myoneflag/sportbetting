@@ -5,7 +5,7 @@ import { apis } from '../../helpers'
 function formatDate (date) {
   const d = new Date(date)
   let mm = d.getMinutes()
-  if(mm<10) mm='0'+mm; 
+  if( mm < 10 ) mm = '0' + mm; 
   return `${d.getMonth()}/${d.getDate()}/${d.getFullYear()} ${d.getHours()}:${mm}`
 }
 
