@@ -113,42 +113,7 @@ const BetTable = ({ betPice }) => {
   )
 }
 
-export const BetSection = ({ betData, id, getBetDataOnly }) => {
-
-  const postEvent = (data) => {
-    if (localStorage.getItem('refresh')) {
-      axios.post(apiUrl + apis.tokenrefresh, {
-        "refresh": localStorage.getItem('refresh')
-      })
-        .then((res) => {
-          if (res.data) {
-            localStorage.setItem('access', res.data.access)
-            const config = {
-              headers: {
-                Authorization: "Bearer " + localStorage.getItem('access')
-              }
-            }
-            axios.post(apiUrl + apis.postEvent.replace('{slug}', 'sport-boys-association-sporting-cristal'), {...data}, config)
-              .then((res) => {
-                if (res.data) {
-                  console.log(res.data)
-                  // setAlert({type: 'success', msg: 'Deposit successfully'})
-                  getBetDataOnly()
-                }
-              })
-              .catch((err) => {
-                console.log('post-event', err.response)
-                // setAlert({type: err.response?'warning':'error', msg: err.response? err.response.data.code[0]:'Error establishing a connection'})
-              })
-          }
-        })
-        .catch((err) => {
-          // setAlert({type: err.response? 'warning':'error', msg: err.response? 'Token expired. Login again':'Error establishing a connection'})
-        })
-    } else {
-      // setAlert({type: 'warning', msg: 'Token expired. Login again'})
-    }
-  }
+export const BetSection = ({ betData, id, postEvent }) => {
 
   return (
     <div className="bet-sec1-lay-back-div">
@@ -179,7 +144,14 @@ export const BetSection = ({ betData, id, getBetDataOnly }) => {
           <h6>{formatDate(event.date)}</h6>
         </div>
         {
-          event.market_results.map((tdata, index) => <BetTable key={index} betPice={{postEvent, event, target: ["home", "draw", "away", "upcoming"][index], id: idex+''+id+''+index, tdata}} />)
+          event.market_results.map((tdata, index) => 
+            <BetTable key={index}
+              betPice={{
+                postEvent,
+                event, 
+                target: event.market_results.length>2? ["home", "draw", "away", "upcoming"][index]:["home", "away"][index], 
+                id: idex+''+id+''+index, tdata
+              }} />)
         }
       </div>)}
     </div>

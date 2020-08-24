@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 import { apis } from '../helpers'
 import { Routes } from '../routes/routing'
 
@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 export const Layout = () => {
 
   const classes = useStyles()
+  const history = useHistory()
 
   let location = useLocation()
   const currentPath = location.pathname
@@ -54,21 +55,29 @@ export const Layout = () => {
     verifyToken()
   }, [])
 
-  const getEvent = async () => {
-    await axios.get(apiUrl + apis.getEvents + '?sport_name=Football')
+  const getEvent = async (sport) => {
+    setEventData([])
+    let tmpSport = ''
+    if (sport) {
+      history.push({ search: `?sport=${sport}` })
+      tmpSport = sport
+    } else if (['Football', 'Basketball', 'Tennis'].includes(location.search.replace('?sport=', ''))) {
+      tmpSport = location.search.replace('?sport=', '')
+    } else tmpSport = 'Football'
+    await axios.get(apiUrl + apis.getEvents + `?sport_name=${tmpSport}`)
       .then((res) => {
         if (res.statusText === "OK") {
           setEventData([...new Set(res.data.map(e => e.league))].map(league => {
             let tempEvents = res.data.filter(event => event.league === league)
             tempEvents.map((event, index) => {
-              console.log(event.match_result)
+              // console.log(event.match_result)
               let readtEvent = []
               try {
                 if (Array.isArray(event.market_results)) readtEvent = [...event.market_results]
                 else if (Array.isArray(JSON.parse(event.market_results.replace(/\'/g, '"')))) readtEvent = [...JSON.parse(event.market_results.replace(/\'/g, '"'))]
               } catch (err) {
-                console.log(event.market_results)
-                console.log(err)
+                console.log(event)
+                // console.log(err)
               }
               tempEvents[index].market_results = [...readtEvent]
             })
@@ -293,7 +302,42 @@ export const Layout = () => {
     }
   }
 
-  const props = { currentPath, updateUserData, userData, submitDeposit, submiWithdrawal, eventData, getBetDataOnly }
+  const postEvent = (data) => {
+    if (localStorage.getItem('refresh')) {
+      axios.post(apiUrl + apis.tokenrefresh, {
+        "refresh": localStorage.getItem('refresh')
+      })
+        .then((res) => {
+          if (res.data) {
+            localStorage.setItem('access', res.data.access)
+            const config = {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem('access')
+              }
+            }
+            axios.post(apiUrl + apis.postEvent.replace('{slug}', 'sport-boys-association-sporting-cristal'), {...data}, config)
+              .then((res) => {
+                if (res.data) {
+                  console.log(res.data)
+                  setAlert({type: 'success', msg: 'Deposit successfully'})
+                  getBetDataOnly()
+                }
+              })
+              .catch((err) => {
+                console.log('post-event', err.response)
+                setAlert({type: err.response?'warning':'error', msg: err.response? err.response.data.code[0]:'Error establishing a connection'})
+              })
+          }
+        })
+        .catch((err) => {
+          setAlert({type: err.response? 'warning':'error', msg: err.response? 'Token expired. Login again':'Error establishing a connection'})
+        })
+    } else {
+      setAlert({type: 'warning', msg: 'Please Login'})
+    }
+  }
+
+  const props = { currentPath, updateUserData, userData, submitDeposit, submiWithdrawal, eventData, postEvent, handleChangedSport: getEvent }
 
   return (
     loading? <Grid container justify="center" alignItems="center" className="loading" direction="column">
