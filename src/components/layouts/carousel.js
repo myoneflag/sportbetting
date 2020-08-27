@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import OwlCarousel from 'react-owl-carousel'
 import 'owl.carousel/dist/assets/owl.carousel.css'
 import 'owl.carousel/dist/assets/owl.theme.default.css'
@@ -9,9 +9,15 @@ const betting = require('../../assets/img/tennis-betting-2018-min-1024x415.jpg')
 const tennis = require('../../assets/img/tennis-main.jpg')
 
 export const CarouselSection = () => {
+  // const [startPosition, setStartPosition] = useState(0)
+  // const updateCarouselPosition = (object) => {
+  //   if(object.item.index != startPosition){ setStartPosition(object.item.index); }
+  // }
+  console.log('carousel loading...')
   return (
     <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
       <OwlCarousel
+        // startPosition={startPosition}
         className="owl-theme carousel-inner"
         items={1}
         loop
@@ -21,6 +27,7 @@ export const CarouselSection = () => {
         navContainerClass="navs-container"
         navClass={['carousel-control-prev', 'carousel-control-next']}
         autoplayTimeout={2000}
+        // onDragged={(object) => updateCarouselPosition(object)}
       >
         <div className="item">
           <img className="d-block w-100" src={sport} alt="First slide" />

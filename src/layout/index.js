@@ -76,7 +76,7 @@ export const Layout = () => {
                 if (Array.isArray(event.market_results)) readtEvent = [...event.market_results]
                 else if (Array.isArray(JSON.parse(event.market_results.replace(/\'/g, '"')))) readtEvent = [...JSON.parse(event.market_results.replace(/\'/g, '"'))]
               } catch (err) {
-                console.log(event)
+                // console.log(event)
                 // console.log(err)
               }
               tempEvents[index].market_results = [...readtEvent]
@@ -315,7 +315,7 @@ export const Layout = () => {
                 Authorization: "Bearer " + localStorage.getItem('access')
               }
             }
-            axios.post(apiUrl + apis.postEvent.replace('{slug}', 'sport-boys-association-sporting-cristal'), {...data}, config)
+            axios.post(apiUrl + apis.postEvent.replace('{slug}', data.slug), {...data}, config)
               .then((res) => {
                 if (res.data) {
                   console.log(res.data)
@@ -325,7 +325,7 @@ export const Layout = () => {
               })
               .catch((err) => {
                 console.log('post-event', err.response)
-                setAlert({type: err.response?'warning':'error', msg: err.response? err.response.data.code[0]:'Error establishing a connection'})
+                setAlert({type: err.response?'warning':'error', msg: err.response? 'Oop. Not able to place bet.':'Error establishing a connection'})
               })
           }
         })

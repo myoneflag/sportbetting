@@ -1,20 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { CarouselSection } from '../components/layouts/carousel'
 import { bet } from '../helpers'
 import { BetSection } from '../components/layouts/bet'
 import { BetSlip } from '../components/layouts/betslip'
 import { Detail } from '../components/layouts/detail'
+import { CarouselSection } from '../components/layouts/carousel'
 
 export const Home = (props) => {
   const {userData, updateUserData, eventData, handleChangedSport} = props
-  console.log(eventData)
-  const liveEventData = [...eventData.map(item => {
-    return {...item, ...{events: item.events.filter(e => {
-      if (new Date() > new Date(e.created) && new Date() < new Date(e.date)) return true
-      else return false
-    })}}
-  }).filter(data => data.events.length)]
+  const [liveEventData, setLiveEventData] = useState([])
+  useEffect(() => {
+    setLiveEventData([...eventData.map(item => {
+      return {...item, ...{events: item.events.filter(e => {
+        if (new Date() > new Date(e.created) && new Date() < new Date(e.date)) return true
+        else return false
+      })}}
+    }).filter(data => data.events[0] && data.events[0].market_results.length > 0)])
+  }, [eventData])
+  console.log('liveEventData =>', liveEventData)
   let location = useLocation()
   const sport = location.search.replace('?sport=', '')
 
