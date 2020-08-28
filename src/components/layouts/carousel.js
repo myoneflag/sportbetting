@@ -9,15 +9,12 @@ const betting = require('../../assets/img/tennis-betting-2018-min-1024x415.jpg')
 const tennis = require('../../assets/img/tennis-main.jpg')
 
 export const CarouselSection = () => {
-  // const [startPosition, setStartPosition] = useState(0)
-  // const updateCarouselPosition = (object) => {
-  //   if(object.item.index != startPosition){ setStartPosition(object.item.index); }
-  // }
+
   console.log('carousel reloading...')
   return (
     <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
       <OwlCarousel
-        // startPosition={startPosition}
+        startPosition={localStorage.getItem('carousel') || 1}
         className="owl-theme carousel-inner"
         items={1}
         loop={true}
@@ -29,7 +26,7 @@ export const CarouselSection = () => {
         lazyLoad={true}
         autoplay={true}
         // autoplayTimeout={2000}
-        // onDragged={(object) => updateCarouselPosition(object)}
+        onChange={(e) => localStorage.setItem('carousel', e.item.index)}
       >
         <div className="item">
           <img className="d-block w-100" src={sport} alt="First slide" />

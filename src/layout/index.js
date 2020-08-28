@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import { apis } from '../helpers'
 import { Routes } from '../routes/routing'
@@ -54,6 +54,10 @@ export const Layout = () => {
     getEvent()
     verifyToken()
   }, [])
+
+  useCallback(() => {
+
+  }, [alert])
 
   const getEvent = async () => {
     console.log(currentPath);
@@ -319,7 +323,7 @@ export const Layout = () => {
               })
               .catch((err) => {
                 console.log('post-event', err.response)
-                setAlert({type: err.response?'warning':'error', msg: err.response? 'Oop. Not able to place bet.':'Error establishing a connection'})
+                setAlert({type: err.response?'warning':'error', msg: err.response? 'Oop! Not able to place bet.':'Error establishing a connection'})
               })
           }
         })

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useCallback } from 'react'
 // import { useLocation } from 'react-router-dom'
 // import { bet } from '../helpers'
 // import { BetSection } from '../components/layouts/bet'
@@ -8,6 +8,10 @@ import { Events } from '../components/layouts/events'
 import { CarouselSection } from '../components/layouts/carousel'
 
 export const Home = (props) => {
+
+  useCallback(() => {
+    console.log('props changed')
+  }, [props])
 
   return (
     <section id="bet-sec1">
