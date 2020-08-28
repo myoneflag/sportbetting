@@ -20,13 +20,15 @@ export const CarouselSection = () => {
         // startPosition={startPosition}
         className="owl-theme carousel-inner"
         items={1}
-        loop
+        loop={true}
         nav
         dotsClass="carousel-indicators"
         dotClass="dot"
         navContainerClass="navs-container"
         navClass={['carousel-control-prev', 'carousel-control-next']}
-        autoplayTimeout={2000}
+        lazyLoad={true}
+        autoplay={true}
+        // autoplayTimeout={2000}
         // onDragged={(object) => updateCarouselPosition(object)}
       >
         <div className="item">
