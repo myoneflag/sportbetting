@@ -13,7 +13,7 @@ function formatDate (date) {
 
 const BetTable = ({ betPice }) => {
   const { event, target, id, tdata, postEvent } = betPice
-  console.log('tdata', event)
+  // console.log('tdata', event)
 
   const openTab = (id) => {
     const targets = document.getElementsByClassName('table-box1-containerTab')

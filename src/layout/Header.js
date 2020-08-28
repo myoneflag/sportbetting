@@ -157,7 +157,7 @@ const Header = (props) => {
         .then((res) => {
           setLoading(false)
           if (res.data) {
-            console.log(res.data)
+            // console.log(res.data)
             setAlert({ type: 'success', msg: 'Login successful' })
             setOpenLogin(false)
             localStorage.setItem('access', res.data.access)
@@ -205,7 +205,7 @@ const Header = (props) => {
         .then((res) => {
           setLoading(false)
           if (res.data) {
-            console.log('register success', res.data)
+            // console.log('register success', res.data)
             setAlert({ type: 'success', msg: 'Registeration successful' })
             setOpenLogin(true)
           } else {
@@ -215,7 +215,7 @@ const Header = (props) => {
         .catch((err) => {
           setLoading(false)
           setOpen(true)
-          console.log(err.response)
+          // console.log(err.response)
           setAlert({ type: 'error', msg: err.response ? 'Wrong credentials' : 'Error establishing a connection' })
         })
     }
@@ -299,7 +299,7 @@ const Header = (props) => {
         }
       })
       .catch((err) => {
-        console.log('info', err.response)
+        // console.log('info', err.response)
         setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user info':'Error establishing a connection'})
       })
   }

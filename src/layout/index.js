@@ -123,7 +123,7 @@ export const Layout = () => {
         if (res.statusText === "OK") {
           // console.log('info', res.data)
           userData.info = res.data
-          console.log(res.data)
+          // console.log(res.data)
         }
       })
       .catch((err) => {

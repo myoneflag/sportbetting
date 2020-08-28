@@ -13,7 +13,7 @@ export const CarouselSection = () => {
   // const updateCarouselPosition = (object) => {
   //   if(object.item.index != startPosition){ setStartPosition(object.item.index); }
   // }
-  console.log('carousel loading...')
+  console.log('carousel reloading...')
   return (
     <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
       <OwlCarousel
