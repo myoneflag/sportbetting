@@ -1,6 +1,6 @@
 import * as React from 'react'
-import axios from 'axios'
-import { apis } from '../../helpers'
+// import axios from 'axios'
+// import { apis } from '../../helpers'
 
 function formatDate (date) {
   const d = new Date(date)
@@ -9,7 +9,7 @@ function formatDate (date) {
   return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} ${d.getHours()}:${mm}`
 }
 
-const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_SERVER : process.env.REACT_APP_DEV_SERVER;
+// const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_SERVER : process.env.REACT_APP_DEV_SERVER;
 
 const BetTable = ({ betPice }) => {
   const { event, target, id, tdata, postEvent } = betPice
@@ -137,7 +137,7 @@ export const BetSection = ({ betData, id, postEvent }) => {
               betPice={{
                 postEvent,
                 event, 
-                target: event.market_results.length>2? ["home", "draw", "away", "upcoming"][index]:["home", "away"][index], 
+                target: event.sport_name === 'Football'? ["home", "draw", "away", "upcoming"][index]:["home", "away"][index], 
                 id: idex+''+id+''+index, tdata
               }} />)
         }

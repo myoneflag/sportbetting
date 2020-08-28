@@ -44,7 +44,7 @@ export const Layout = () => {
   const [userData, setUserData] = useState({apiUrl})
   const [loading, setLoading] = useState(true)
   const [alert, setAlert] = useState(null)
-  const [eventData, setEventData] = useState(null)
+  const [eventData, setEventData] = useState([])
 
   const updateUserData = (verified) => {
     verified? getUserData() : verifyToken()
@@ -55,16 +55,9 @@ export const Layout = () => {
     verifyToken()
   }, [])
 
-  const getEvent = async (sport) => {
-    setEventData([])
-    let tmpSport = ''
-    if (sport) {
-      history.push({ search: `?sport=${sport}` })
-      tmpSport = sport
-    } else if (['Football', 'Basketball', 'Tennis'].includes(location.search.replace('?sport=', ''))) {
-      tmpSport = location.search.replace('?sport=', '')
-    } else tmpSport = 'Football'
-    await axios.get(apiUrl + apis.getEvents + `?sport_name=${tmpSport}`)
+  const getEvent = async () => {
+    console.log(currentPath);
+    await axios.get(apiUrl + apis.getLiveEvents)
       .then((res) => {
         if (res.statusText === "OK") {
           setEventData([...new Set(res.data.map(e => e.league))].map(league => {
@@ -108,6 +101,7 @@ export const Layout = () => {
           setLoading(false)
           console.log(err.response)
           setAlert({type: err.response? 'warning':'error', msg: err.response? 'Token expired. Login again':'Error establishing a connection'})
+          localStorage.clear()
         })
     } else {
       setLoading(false)

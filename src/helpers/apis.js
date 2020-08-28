@@ -10,6 +10,7 @@ export const apis = {
   prepaidCardDeposit: 'prepaid-card-deposit/',
   withdrawals: 'withdrawals/',
   getEvents: 'events/',
+  getLiveEvents: 'events/live/',
   postEvent: 'events/{slug}/bets/',
   betEvent: 'events/{slug}/bets/'
 }

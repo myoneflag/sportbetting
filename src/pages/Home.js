@@ -1,25 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
-import { bet } from '../helpers'
-import { BetSection } from '../components/layouts/bet'
+import React from 'react'
+// import { useLocation } from 'react-router-dom'
+// import { bet } from '../helpers'
+// import { BetSection } from '../components/layouts/bet'
 import { BetSlip } from '../components/layouts/betslip'
-import { Detail } from '../components/layouts/detail'
+// import { Detail } from '../components/layouts/detail'
+import { Events } from '../components/layouts/events'
 import { CarouselSection } from '../components/layouts/carousel'
 
 export const Home = (props) => {
-  const {userData, updateUserData, eventData, handleChangedSport} = props
-  const [liveEventData, setLiveEventData] = useState([])
-  useEffect(() => {
-    setLiveEventData([...eventData.map(item => {
-      return {...item, ...{events: item.events.filter(e => {
-        if (new Date() > new Date(e.created) && new Date() < new Date(e.date)) return true
-        else return false
-      })}}
-    }).filter(data => data.events[0] && data.events[0].market_results.length > 0)])
-  }, [eventData])
-  console.log('liveEventData =>', liveEventData)
-  let location = useLocation()
-  const sport = location.search.replace('?sport=', '')
 
   return (
     <section id="bet-sec1">
@@ -28,18 +16,7 @@ export const Home = (props) => {
           <div className="col-sm-9 bet-sec1-row1-div2">
             <CarouselSection />
             {/* detail? <Detail detail={detail} /> :  */}
-            {<>
-              <div className="bet-sec1-div1-football-basketball-tennis-div">
-                <button className={`bet-sec1-div1-football ${(!sport || sport === 'Football') && 'active'}`} onClick={() => handleChangedSport('Football')}>Football</button>
-                <button className={`bet-sec1-div1-basketball ${sport === 'Basketball' && 'active'}`} onClick={() => handleChangedSport('Basketball')}>Basketball</button>
-                <button className={`bet-sec1-div1-tennis ${sport === 'Tennis' && 'active'}`} onClick={() => handleChangedSport('Tennis')}>Tennis</button>
-              </div>
-              <div id="lay_back_myDIV">
-                {
-                  liveEventData && liveEventData.map((betd, index) => <BetSection betData={betd} key={index} id={index} {...props} />)
-                }
-              </div>
-            </>}
+            <Events {...props} />
           </div>
           <div className="col-sm-3 bet-sec1-row1-div3">
             <BetSlip {...props} />
