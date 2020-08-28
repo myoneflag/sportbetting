@@ -11,7 +11,7 @@ export const Events = (props) => {
 
   console.log('Event Data => ', eventData)
   const dispalyEventData = eventData.map(evt => {
-    let availableEvents = evt.events.filter(event => event.sport_name === sport && event.market_results.length && (currentPath === '/future' && event.match_result === 'Upcoming' || currentPath !== '/future'))
+    let availableEvents = evt.events.filter(event => event.sport_name === sport && event.market_results.length && ((currentPath === '/future' && event.match_result === 'Upcoming' && new Date(event.created) > new Date()) || currentPath !== '/future'))
     return availableEvents.length? {...evt, events: availableEvents} : null
   }).filter(evt => evt)
 
@@ -26,7 +26,7 @@ export const Events = (props) => {
         {
           dispalyEventData.length
             ? dispalyEventData.map((betd, index) => <BetSection betData={betd} key={index} id={index} {...props} />)
-            : <p style={{textAlign: 'center'}}>No Events</p>
+            : <p style={{textAlign: 'center'}}>No Game</p>
         }
       </div>
     </>

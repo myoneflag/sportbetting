@@ -57,7 +57,7 @@ export const Layout = () => {
 
   const getEvent = async () => {
     console.log(currentPath);
-    await axios.get(apiUrl + currentPath === '/future'? apis.getEvents : apis.getLiveEvents)
+    await axios.get(currentPath === '/future'? apiUrl + apis.getEvents : apiUrl + apis.getLiveEvents)
       .then((res) => {
         if (res.statusText === "OK") {
           setEventData([...new Set(res.data.map(e => e.league))].map(league => {
