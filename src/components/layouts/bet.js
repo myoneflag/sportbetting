@@ -8,7 +8,7 @@ function formatDate (date) {
 }
 
 const BetTable = ({ betPice }) => {
-  const { event, target, id, tdata, postEvent } = betPice
+  const { event, target, id, tdata, postEvent, index } = betPice
 
   const openTab = (id) => {
     const targets = document.getElementsByClassName('table-box1-containerTab')
@@ -48,18 +48,18 @@ const BetTable = ({ betPice }) => {
   console.log('tdata =>', tdata)
 
   return (
-    (!tdata.visibility || tdata.visibility === "Visible") && <>
+    <>
       <table className="table table1 home-table">
         <tbody>
           <tr>
             <td className="table1-td1">{target}</td>
             <td className="table1-td2">
               <button className="tab-btn1 table-box1-column lay_back_btn" id={'bf'+id} onClick={() => openTab('f'+id)}>
-                <p>{tdata.odds? tdata.odds : 0}</p>
+                <p>{event.market_results[index] && event.market_results[index].odds? event.market_results[index].odds : 0}</p>
                 <p>€ 0</p>
               </button>
               <button className="tab-btn1 table-box2-column lay_back_btn" id={'bt'+id} onClick={() => openTab('t'+id)}>
-                <p>{tdata.odds? tdata.odds : 0}</p>
+                <p>{event.market_results[index] && event.market_results[index].odds? event.market_results[index].odds : 0}</p>
                 <p>€ 0</p>
               </button>
             </td>
@@ -70,7 +70,7 @@ const BetTable = ({ betPice }) => {
         <div className="bet1-number table-box1-div1">
           <h1> Back ( { event[target]? event[target] : 'X' } )</h1>
           <span className="minus" onClick={stakeDecrease}>-</span>
-          <input type="number" min="0" id={'stake-back'+id} step="0.02" defaultValue={tdata.odds? tdata.odds : 0} />
+          <input type="number" min="0" id={'stake-back'+id} step="0.02" defaultValue={event.market_results[index] && event.market_results[index].odds? event.market_results[index].odds : 0} />
           <span className="plus" onClick={stakeIncrease}>+</span>
         </div>
         <div className="bet1-number table-box1-div2">
@@ -133,29 +133,22 @@ export const BetSection = ({ betData, id, postEvent }) => {
           <h6>{formatDate(event.date)}</h6>
         </div>
         {
-          event.market_results.length? event.market_results.map((tdata, index) => 
-            <BetTable key={index}
-              betPice={{
-                postEvent,
-                event, 
-                target: event.sport_name === 'Football'? ["home", "draw", "away", "upcoming"][index]:["home", "away"][index], 
-                id: idex+''+id+''+index, tdata
-              }} />)
-            :
-            event.sport_name === 'Football'? ["home", "draw", "away"].map((tdata, index) => <BetTable key={index}
-              betPice={{
-                postEvent,
-                event, 
-                target: ["home", "draw", "away"][index], 
-                id: idex+''+id+''+index, tdata
-              }} />)
-            : ["home", "away"].map((tdata, index) => <BetTable key={index}
-              betPice={{
-                postEvent,
-                event, 
-                target: ["home", "away"][index], 
-                id: idex+''+id+''+index, tdata
-              }} />)
+          event.sport_name === 'Football'? ["home", "draw", "away"].map((tdata, index) => <BetTable key={index}
+            betPice={{
+              postEvent,
+              event,
+              index,
+              target: ["home", "draw", "away"][index],
+              id: idex+''+id+''+index, tdata
+            }} />)
+          : ["home", "away"].map((tdata, index) => <BetTable key={index}
+            betPice={{
+              postEvent,
+              event,
+              index,
+              target: ["home", "away"][index], 
+              id: idex+''+id+''+index, tdata
+            }} />)
         }
       </div>)}
     </div>
