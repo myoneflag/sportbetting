@@ -1,6 +1,4 @@
 import * as React from 'react'
-// import axios from 'axios'
-// import { apis } from '../../helpers'
 
 function formatDate (date) {
   const d = new Date(date)
@@ -9,11 +7,8 @@ function formatDate (date) {
   return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} ${d.getHours()}:${mm}`
 }
 
-// const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_SERVER : process.env.REACT_APP_DEV_SERVER;
-
 const BetTable = ({ betPice }) => {
   const { event, target, id, tdata, postEvent } = betPice
-  // console.log('tdata', event)
 
   const openTab = (id) => {
     const targets = document.getElementsByClassName('table-box1-containerTab')
@@ -41,26 +36,30 @@ const BetTable = ({ betPice }) => {
   }
 
   const submitBet = async (side, id, id2) => {
-    if (!document.getElementById(id).value || isNaN(document.getElementById(id).value) || parseFloat(document.getElementById(id).value) <= 0) return
-    if (!document.getElementById(id2).value || isNaN(document.getElementById(id2).value) || parseFloat(document.getElementById(id2).value) <= 0) return
-    postEvent({selection: target, side, odds: parseFloat(document.getElementById(id).value), stake: parseFloat(document.getElementById(id2).value), slug: event.slug})
-    document.getElementById(id).value = 0
-    document.getElementById(id2).value = 0
+    const eID = document.getElementById(id)
+    const eID2 = document.getElementById(id2)
+    if (!eID.value || isNaN(eID.value) || parseFloat(eID.value) <= 0) return
+    if (!eID2.value || isNaN(eID2.value) || parseFloat(eID2.value) <= 0) return
+    postEvent({selection: target, side, odds: parseFloat(eID.value), stake: parseFloat(eID2.value), slug: event.slug})
+    // eID.value = 0
+    eID2.value = 0
   }
 
+  console.log('tdata =>', tdata)
+
   return (
-    tdata.visibility === "Visible" && <>
+    (!tdata.visibility || tdata.visibility === "Visible") && <>
       <table className="table table1 home-table">
         <tbody>
           <tr>
             <td className="table1-td1">{target}</td>
             <td className="table1-td2">
               <button className="tab-btn1 table-box1-column lay_back_btn" id={'bf'+id} onClick={() => openTab('f'+id)}>
-                <p>{tdata.odds}</p>
+                <p>{tdata.odds? tdata.odds : 0}</p>
                 <p>€ 0</p>
               </button>
               <button className="tab-btn1 table-box2-column lay_back_btn" id={'bt'+id} onClick={() => openTab('t'+id)}>
-                <p>{tdata.odds}</p>
+                <p>{tdata.odds? tdata.odds : 0}</p>
                 <p>€ 0</p>
               </button>
             </td>
@@ -69,9 +68,9 @@ const BetTable = ({ betPice }) => {
       </table>
       <div id={'f'+id} className="blue-table-box1 table-box1-containerTab" style={{ display: "none" }}>
         <div className="bet1-number table-box1-div1">
-          <h1> Back ( {tdata.name.value} )</h1>
+          <h1> Back ( { event[target]? event[target] : 'X' } )</h1>
           <span className="minus" onClick={stakeDecrease}>-</span>
-          <input type="number" min="0" id={'stake-back'+id} step="0.02" defaultValue={tdata.odds} />
+          <input type="number" min="0" id={'stake-back'+id} step="0.02" defaultValue={tdata.odds? tdata.odds : 0} />
           <span className="plus" onClick={stakeIncrease}>+</span>
         </div>
         <div className="bet1-number table-box1-div2">
@@ -84,9 +83,9 @@ const BetTable = ({ betPice }) => {
       </div>
       <div id={'t'+id} className="red-table-box1 table-box1-containerTab" style={{ display: "none" }}>
         <div className="bet1-number table-box1-div1">
-          <h1> Lay ( {tdata.name.value} )</h1>
+          <h1> Lay ( { event[target]? event[target] : 'X' } )</h1>
           <span className="minus" onClick={stakeDecrease}>-</span>
-          <input type="number" min="0" id={'stake-lay'+id} step="0.02" defaultValue={tdata.odds}/>
+          <input type="number" min="0" id={'stake-lay'+id} step="0.02" defaultValue={tdata.odds? tdata.odds : 0}/>
           <span className="plus" onClick={stakeIncrease}>+</span>
         </div>
         <div className="bet1-number table-box1-div2">
@@ -102,6 +101,8 @@ const BetTable = ({ betPice }) => {
 }
 
 export const BetSection = ({ betData, id, postEvent }) => {
+
+  console.log('betData => ', betData)
 
   return (
     <div className="bet-sec1-lay-back-div">
@@ -132,12 +133,27 @@ export const BetSection = ({ betData, id, postEvent }) => {
           <h6>{formatDate(event.date)}</h6>
         </div>
         {
-          event.market_results.map((tdata, index) => 
+          event.market_results.length? event.market_results.map((tdata, index) => 
             <BetTable key={index}
               betPice={{
                 postEvent,
                 event, 
                 target: event.sport_name === 'Football'? ["home", "draw", "away", "upcoming"][index]:["home", "away"][index], 
+                id: idex+''+id+''+index, tdata
+              }} />)
+            :
+            event.sport_name === 'Football'? ["home", "draw", "away"].map((tdata, index) => <BetTable key={index}
+              betPice={{
+                postEvent,
+                event, 
+                target: ["home", "draw", "away"][index], 
+                id: idex+''+id+''+index, tdata
+              }} />)
+            : ["home", "away"].map((tdata, index) => <BetTable key={index}
+              betPice={{
+                postEvent,
+                event, 
+                target: ["home", "away"][index], 
                 id: idex+''+id+''+index, tdata
               }} />)
         }

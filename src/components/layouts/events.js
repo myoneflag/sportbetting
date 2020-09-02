@@ -1,17 +1,14 @@
 import React, { useState } from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
 import { BetSection } from './bet'
 
 export const Events = (props) => {
-  let location = useLocation()
-  const currentPath = location.pathname
 
-  const {userData, updateUserData, eventData} = props
+  const {userData, updateUserData, eventData, currentPath} = props
   const [sport, setSport] = useState('Football')
 
   console.log('Event Data => ', eventData)
   const dispalyEventData = eventData.map(evt => {
-    let availableEvents = evt.events.filter(event => event.sport_name === sport && event.market_results.length && ((currentPath === '/future' && event.match_result === 'Upcoming' && new Date(event.created) > new Date()) || currentPath !== '/future'))
+    let availableEvents = evt.events.filter(event => event.sport_name === sport)
     return availableEvents.length? {...evt, events: availableEvents} : null
   }).filter(evt => evt)
 

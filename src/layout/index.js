@@ -41,7 +41,7 @@ export const Layout = () => {
   let location = useLocation()
   const currentPath = location.pathname
 
-  const [userData, setUserData] = useState({apiUrl})
+  const [userData, setUserData] = useState({})
   const [loading, setLoading] = useState(true)
   const [alert, setAlert] = useState(null)
   const [eventData, setEventData] = useState([])
@@ -61,8 +61,9 @@ export const Layout = () => {
 
   const getEvent = async () => {
     console.log(currentPath);
-    await axios.get(currentPath === '/future'? apiUrl + apis.getEvents : apiUrl + apis.getLiveEvents)
+    await axios.get(currentPath === '/'? apiUrl + apis.getEvents + '?live=true' : apiUrl + apis.getEvents + '?live=false')
       .then((res) => {
+        console.log(res)
         if (res.statusText === "OK") {
           setEventData([...new Set(res.data.map(e => e.league))].map(league => {
             let tempEvents = res.data.filter(event => event.league === league)
@@ -335,7 +336,7 @@ export const Layout = () => {
     }
   }
 
-  const props = { currentPath, updateUserData, userData, submitDeposit, submiWithdrawal, eventData, postEvent, handleChangedSport: getEvent }
+  const props = { apiUrl, currentPath, updateUserData, userData, submitDeposit, submiWithdrawal, eventData, postEvent, handleChangedSport: getEvent }
 
   return (
     loading? <Grid container justify="center" alignItems="center" className="loading" direction="column">
