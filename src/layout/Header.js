@@ -80,10 +80,8 @@ for (var i = year.from; i < year.to; i++) {
 
 const emailReg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/
 
-const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_SERVER : process.env.REACT_APP_DEV_SERVER;
-
 const Header = (props) => {
-  const { currentPath, userData, updateUserData } = props // submitDeposit, submiWithdrawal
+  const { currentPath, userData, updateUserData, apiUrl } = props // submitDeposit, submiWithdrawal
   const classes = useStyles()
   // console.log(userData)
   const [loading, setLoading] = useState(false)
@@ -150,7 +148,7 @@ const Header = (props) => {
     else {
       console.log('login...')
       setLoading(true)
-      axios.post(userData.apiUrl + apis.login, {
+      axios.post(apiUrl + apis.login, {
         email: username,
         password: password
       })
@@ -193,7 +191,7 @@ const Header = (props) => {
       setOpen(false)
       console.log('signup...')
       setLoading(true)
-      axios.post(userData.apiUrl + apis.register, {
+      axios.post(apiUrl + apis.register, {
         email: email,
         password: pwd,
         confirm_password: confirmpwd,
