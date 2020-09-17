@@ -103,7 +103,7 @@ const BetTable = ({ betPice }) => {
         <div className="bet1-number table-box1-div1">
           <h1> Lay ( { event[target]? event[target] : 'X' } )</h1>
           <span className="minus" onClick={stakeDecrease}>-</span>
-          <input type="number" min="0" id={'stake-lay'+id} step="0.02" defaultValue={tdata.odds? tdata.odds : 0}/>
+          <input type="number" min="0" id={'stake-lay'+id} step="0.02" defaultValue={event.market_results[index] && event.market_results[index].odds? event.market_results[index].odds : 0}/>
           <span className="plus" onClick={stakeIncrease}>+</span>
         </div>
         <div className="bet1-number table-box1-div2">
