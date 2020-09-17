@@ -12,5 +12,6 @@ export const apis = {
   getEvents: 'events/',
   getLiveEvents: 'events/live/',
   postEvent: 'events/{slug}/bets/',
-  betEvent: 'events/{slug}/bets/'
+  betEvent: 'events/{slug}/bets/',
+  deleteBet: 'events/{event_slug}/bets/{id}/'
 }

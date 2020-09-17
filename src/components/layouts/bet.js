@@ -1,10 +1,25 @@
 import * as React from 'react'
+import { country } from '../../helpers';
+
+let countDown = []
 
 function formatDate (date) {
   const d = new Date(date)
   let mm = d.getMinutes()
   if( mm < 10 ) mm = '0' + mm; 
   return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} ${d.getHours()}:${mm}`
+}
+
+function countDate (event) {
+  var diff = Math.floor((new Date(event.updated) - new Date(event.date)) / 1000)
+  if (diff > 0 && event.period !== 'Finished' && !countDown.includes(event.id)) {
+    countDown.push(event.id)
+    setInterval(() => {
+      const target = document.getElementById('count' + event.id)
+      if (target) target.innerHTML = `${Math.floor(diff / 60)}:${diff % 60 > 9? diff % 60 : '0' + diff % 60}`
+      diff++
+    }, 1000)
+  }
 }
 
 const BetTable = ({ betPice }) => {
@@ -45,14 +60,17 @@ const BetTable = ({ betPice }) => {
     eID2.value = 0
   }
 
-  console.log('tdata =>', tdata)
+  // console.log('tdata =>', tdata)
 
   return (
     <>
       <table className="table table1 home-table">
         <tbody>
           <tr>
-            <td className="table1-td1">{target}</td>
+            <td className="table1-td1">
+              {['Home', 'Away'].includes(target) ? event[target.toLowerCase()] : target} &nbsp;&nbsp;&nbsp;
+              {['Home', 'Away'].includes(target) && event.live_score? event.live_score.split(':')[['Home', 'Away'].indexOf(target)] : ''}
+            </td>
             <td className="table1-td2">
               <button className="tab-btn1 table-box1-column lay_back_btn" id={'bf'+id} onClick={() => openTab('f'+id)}>
                 <p>{event.market_results[index] && event.market_results[index].odds? event.market_results[index].odds : 0}</p>
@@ -79,7 +97,7 @@ const BetTable = ({ betPice }) => {
           <span className="plus" onClick={increase}>+</span>
         </div>
         <button onClick={() => closeTab('f'+id)} className="cancel-btn table-box1-closebtn">Cancel</button>
-        <button className="place-btn" onClick={() => submitBet('back', 'stake-back'+id, 'stake-back-profit'+id)}>Place Bet</button>
+        <button className="place-btn" onClick={() => submitBet('Back', 'stake-back'+id, 'stake-back-profit'+id)}>Place Bet</button>
       </div>
       <div id={'t'+id} className="red-table-box1 table-box1-containerTab" style={{ display: "none" }}>
         <div className="bet1-number table-box1-div1">
@@ -94,7 +112,7 @@ const BetTable = ({ betPice }) => {
           <span className="plus" onClick={increase}>+</span>
         </div>
         <button onClick={() => closeTab('t'+id)} className="cancel-btn table-box1-closebtn">Cancel</button>
-        <button className="place-btn" onClick={() => submitBet('lay', 'stake-lay'+id, 'stake-lay-profit'+id)}>Place Bet</button>
+        <button className="place-btn" onClick={() => submitBet('Lay', 'stake-lay'+id, 'stake-lay-profit'+id)}>Place Bet</button>
       </div>
     </>
   )
@@ -102,7 +120,7 @@ const BetTable = ({ betPice }) => {
 
 export const BetSection = ({ betData, id, postEvent }) => {
 
-  console.log('betData => ', betData)
+  // console.log('betData => ', betData)
 
   return (
     <div className="bet-sec1-lay-back-div">
@@ -128,25 +146,25 @@ export const BetSection = ({ betData, id, postEvent }) => {
       {betData.events.map((event, idex) => <div key={event.id}>
         <div className="bet-sec1-light-green-div">
           <a href="/bet-detail">
-            <h5>{event.title}</h5>
+          <h5>{event.title} &nbsp;&nbsp;&nbsp;{event.live_score && `(${event.live_score})`}</h5>
           </a>
-          <h6>{formatDate(event.date)}</h6>
+          <h6><span id={'count' + event.id}>{countDate(event)}</span> &nbsp;&nbsp;&nbsp; <span className="period">{event.period && `${event.period}`}</span></h6>
         </div>
         {
-          event.sport_name === 'Football'? ["home", "draw", "away"].map((tdata, index) => <BetTable key={index}
+          event.sport_name === 'Football'? ["Home", "Draw", "Away"].map((tdata, index) => <BetTable key={index}
             betPice={{
               postEvent,
               event,
               index,
-              target: ["home", "draw", "away"][index],
+              target: ["Home", "Draw", "Away"][index],
               id: idex+''+id+''+index, tdata
             }} />)
-          : ["home", "away"].map((tdata, index) => <BetTable key={index}
+          : ["Home", "Away"].map((tdata, index) => <BetTable key={index}
             betPice={{
               postEvent,
               event,
               index,
-              target: ["home", "away"][index], 
+              target: ["Home", "Away"][index], 
               id: idex+''+id+''+index, tdata
             }} />)
         }

@@ -6,7 +6,7 @@ export const Events = (props) => {
   const {userData, updateUserData, eventData, currentPath} = props
   const [sport, setSport] = useState('Football')
 
-  console.log('Event Data => ', eventData)
+  // console.log('Event Data => ', eventData)
   const dispalyEventData = eventData.map(evt => {
     let availableEvents = evt.events.filter(event => event.sport_name === sport)
     return availableEvents.length? {...evt, events: availableEvents} : null

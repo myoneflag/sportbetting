@@ -537,6 +537,9 @@ table.bet-sec1-lay-back-table tr td {
     margin-block-start: 0rem;
     margin-block-end: 0rem;
 }
+.bet-sec1-light-green-div h6 .period {
+    color: #fef0b0;
+}
 .bet-sec1-lay-back-table h1 {
     font-weight: 600;
     line-height: 21px;

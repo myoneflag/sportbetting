@@ -60,10 +60,9 @@ export const Layout = () => {
   }, [alert])
 
   const getEvent = async () => {
-    console.log(currentPath);
     await axios.get(currentPath === '/'? apiUrl + apis.getEvents + '?live=true' : apiUrl + apis.getEvents + '?live=false')
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         if (res.statusText === "OK") {
           setEventData([...new Set(res.data.map(e => e.league))].map(league => {
             let tempEvents = res.data.filter(event => event.league === league)
@@ -138,7 +137,7 @@ export const Layout = () => {
     await axios.get(apiUrl + apis.getselfbet, config)
       .then((res) => {
         if (res.statusText === "OK") {
-          console.log('bet', res.data)
+          // console.log('bet', res.data)
           userData.bets = res.data
         }
       })
@@ -181,7 +180,7 @@ export const Layout = () => {
     await axios.get(apiUrl + apis.getselfbet, config)
       .then((res) => {
         if (res.statusText === "OK") {
-          console.log('bet', res.data)
+          // console.log('bet', res.data)
           userData.bets = res.data
         }
       })
@@ -189,6 +188,26 @@ export const Layout = () => {
         console.log('bets', err.response)
         setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get user self bet':'Error establishing a connection'})
       })
+  }
+
+  const deleteBetDate = async (betslip) => {
+    const config = {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem('access')
+      }
+    }
+    await axios.delete(apiUrl + apis.deleteBet.replace('{event_slug}', betslip.event.title.replace(' - ', '-').replace(/\s/g, '-').toLowerCase()).replace('{id}', betslip.id), config)
+      .then((res) => {
+        if (res.statusText === "OK") {
+          setAlert({type: 'success', msg: 'Deleted successfully'})
+          getBetDataOnly()
+        }
+      })
+      .catch((err) => {
+        console.log('bets', err.response)
+        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to delete bet':'Error establishing a connection'})
+      })
+
   }
   
   const getUserDataOnly = async () => {
@@ -317,8 +336,8 @@ export const Layout = () => {
             axios.post(apiUrl + apis.postEvent.replace('{slug}', data.slug), {...data}, config)
               .then((res) => {
                 if (res.data) {
-                  console.log(res.data)
-                  setAlert({type: 'success', msg: 'Deposit successfully'})
+                  // console.log(res.data)
+                  setAlert({type: 'success', msg: 'Bet successfully'})
                   getBetDataOnly()
                 }
               })
@@ -336,7 +355,7 @@ export const Layout = () => {
     }
   }
 
-  const props = { apiUrl, currentPath, updateUserData, userData, submitDeposit, submiWithdrawal, eventData, postEvent, handleChangedSport: getEvent }
+  const props = { apiUrl, currentPath, updateUserData, userData, submitDeposit, submiWithdrawal, eventData, postEvent, handleChangedSport: getEvent, deleteBetDate: deleteBetDate }
 
   return (
     loading? <Grid container justify="center" alignItems="center" className="loading" direction="column">

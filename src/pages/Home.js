@@ -10,7 +10,7 @@ import { CarouselSection } from '../components/layouts/carousel'
 export const Home = (props) => {
 
   useCallback(() => {
-    console.log('props changed')
+    // console.log('props changed')
   }, [props])
 
   return (

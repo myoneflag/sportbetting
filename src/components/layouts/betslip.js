@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 export const BetSlip = (props) => {
-  const {userData, updateUserData} = props
+  const {userData, updateUserData, deleteBetDate} = props
 
   const betslips = userData.bets
 
@@ -16,10 +16,6 @@ export const BetSlip = (props) => {
   useEffect(() => {
     if (window.innerWidth < 768) setDisplaySlipbox(false)
   }, [])
-
-  const handleCupDelete = (index) => {
-    // delete bet id 
-  }
 
   return (
     <div className="bet-sec1-row1-div3-bet-slip-div" id="bet-slip-container-html">
@@ -36,7 +32,7 @@ export const BetSlip = (props) => {
           {value === 'single' || value === 'multi'? <>{betslips && betslips.map((betslip, index) => <div className="cup-info-box" key={index}>
             <div className="bet-sec1-row1-div3-Cypriot">
               <h2>{betslip.selection}</h2>
-              <i className="fas fa-times remove-cup-box" onClick={() => handleCupDelete(betslip.id)}></i>
+              <i className="fas fa-times remove-cup-box" onClick={() => deleteBetDate(betslip)}></i>
             </div>
             <div className="bet-sec1-row1-div3-omania">
               <h1>{betslip.event.title}</h1>
