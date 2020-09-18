@@ -10,7 +10,6 @@ const tennis = require('../../assets/img/tennis-main.jpg')
 
 export const CarouselSection = () => {
 
-  console.log('carousel reloading...')
   return (
     <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
       <OwlCarousel

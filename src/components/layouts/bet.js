@@ -11,13 +11,20 @@ function formatDate (date) {
 }
 
 function countDate (event) {
-  var diff = Math.floor((new Date(event.updated) - new Date(event.date)) / 1000)
-  if (diff > 0 && event.period !== 'Finished' && !countDown.includes(event.id)) {
-    countDown.push(event.id)
-    setInterval(() => {
+  var diff = event.period === '2H' ? Math.floor((new Date(event.updated) - new Date(event.date)) / 1000) - (15 * 60) : Math.floor((new Date(event.updated) - new Date(event.date)) / 1000)
+  if (diff > 0 && event.period !== 'Finished' && event.period !== 'Halftime' && !countDown.includes(event.id)) {
+    countDown[event.id] = setInterval(() => {
       const target = document.getElementById('count' + event.id)
       if (target) target.innerHTML = `${Math.floor(diff / 60)}:${diff % 60 > 9? diff % 60 : '0' + diff % 60}`
       diff++
+      if (diff > 100 * 60) {
+        clearInterval(countDown[event.id])
+        target.innerHTML = ''
+        document.getElementById('period' + event.id).innerHTML = 'Finished'
+      } else if (diff > 60 * 60) {
+        diff -= 15 * 60
+        document.getElementById('period' + event.id).innerHTML = '2H'
+      }
     }, 1000)
   }
 }
@@ -148,7 +155,7 @@ export const BetSection = ({ betData, id, postEvent }) => {
           <a href="/bet-detail">
           <h5>{event.title} &nbsp;&nbsp;&nbsp;{event.live_score && `(${event.live_score})`}</h5>
           </a>
-          <h6><span id={'count' + event.id}>{countDate(event)}</span> &nbsp;&nbsp;&nbsp; <span className="period">{event.period && `${event.period}`}</span></h6>
+          <h6><span id={'count' + event.id}>{countDate(event)}</span> &nbsp;&nbsp;&nbsp; <span className="period" id={'period' + event.id}>{event.period && `${event.period}`}</span></h6>
         </div>
         {
           event.sport_name === 'Football'? ["Home", "Draw", "Away"].map((tdata, index) => <BetTable key={index}
