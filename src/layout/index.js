@@ -62,7 +62,6 @@ export const Layout = () => {
   const getEvent = async () => {
     await axios.get(currentPath === '/'? apiUrl + apis.getEvents + '?live=true' : apiUrl + apis.getEvents + '?live=false')
       .then((res) => {
-        // console.log(res)
         if (res.statusText === "OK") {
           setEventData([...new Set(res.data.map(e => e.league))].map(league => {
             let tempEvents = res.data.filter(event => event.league === league)
@@ -78,7 +77,7 @@ export const Layout = () => {
               }
               tempEvents[index].market_results = [...readtEvent]
             })
-            return {league, events: tempEvents}
+            return {league, events: tempEvents, serTime: res.headers["x-server-time"]}
           }))
         }
       })
