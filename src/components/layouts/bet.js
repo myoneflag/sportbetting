@@ -68,7 +68,8 @@ function countDate111 (event, serverTime) {
 }
 
 function countDate (event, serverTime) {
-  var diff = event.period === '2H'? Math.floor((new Date(serverTime) - new Date(event.timer.base)) / 1000) - (15 * 60) : Math.floor((new Date(serverTime) - new Date(event.timer.base)) / 1000)
+  var diff = Math.floor((new Date(serverTime).getTime() - new Date(event.timer.base).getTime()) / 1000)
+  if (event.period === '2H') diff += event.timer.seconds
   if (diff > 0 && !countDown.includes(event.id)) {
     countDown.push(event.id)
     setInterval(() => {	

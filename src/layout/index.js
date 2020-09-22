@@ -44,49 +44,18 @@ export const Layout = () => {
   const [userData, setUserData] = useState({})
   const [loading, setLoading] = useState(true)
   const [alert, setAlert] = useState(null)
-  const [eventData, setEventData] = useState([])
 
   const updateUserData = (verified) => {
     verified? getUserData() : verifyToken()
   }
 
   useEffect(() => {
-    getEvent()
     verifyToken()
   }, [])
 
   useCallback(() => {
 
   }, [alert])
-
-  const getEvent = async () => {
-    await axios.get(currentPath === '/'? apiUrl + apis.getEvents + '?live=true' : apiUrl + apis.getEvents + '?live=false')
-      .then((res) => {
-        if (res.statusText === "OK") {
-          setEventData([...new Set(res.data.map(e => e.league))].map(league => {
-            let tempEvents = res.data.filter(event => event.league === league)
-            tempEvents.map((event, index) => {
-              // console.log(event.match_result)
-              let readtEvent = []
-              try {
-                if (Array.isArray(event.market_results)) readtEvent = [...event.market_results]
-                else if (Array.isArray(JSON.parse(event.market_results.replace(/\'/g, '"')))) readtEvent = [...JSON.parse(event.market_results.replace(/\'/g, '"'))]
-              } catch (err) {
-                // console.log(event)
-                // console.log(err)
-              }
-              tempEvents[index].market_results = [...readtEvent]
-            })
-            return {league, events: tempEvents, serTime: res.headers["x-server-time"]}
-          }))
-        }
-      })
-      .catch((err) => {
-        console.log('info', err.response)
-        setAlert({type: err.response?'warning':'error', msg: err.response? 'Not able to get events info':'Error establishing a connection'})
-      })
-
-  }
 
   const verifyToken = () => {
     if (localStorage.getItem('refresh')) {
@@ -354,7 +323,7 @@ export const Layout = () => {
     }
   }
 
-  const props = { apiUrl, currentPath, updateUserData, userData, submitDeposit, submiWithdrawal, eventData, postEvent, handleChangedSport: getEvent, deleteBetDate: deleteBetDate }
+  const props = { apiUrl, currentPath, updateUserData, userData, submitDeposit, submiWithdrawal, postEvent, deleteBetDate: deleteBetDate }
 
   return (
     loading? <Grid container justify="center" alignItems="center" className="loading" direction="column">
