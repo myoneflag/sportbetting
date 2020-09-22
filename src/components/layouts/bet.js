@@ -206,7 +206,7 @@ export const BetSection = ({ betData, id, postEvent }) => {
           </a>
           <h6>
             <span id={'count' + event.id}>
-              {(event.period !== 'Finished' && event.period !== 'Half Time' && event.period !== 'Not Started' && event.timer && event.timer.base)? countDate(event, betData.serTime): ''}
+              {(event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base)? countDate(event, betData.serTime): ''}
             </span> &nbsp;&nbsp;&nbsp; 
             <span className="period" id={'period' + event.id}>{event.period && `${event.period}`}</span>
           </h6>
