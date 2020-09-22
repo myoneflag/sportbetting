@@ -10,8 +10,8 @@ function formatDate (date) {
   return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} ${d.getHours()}:${mm}`
 }
 
-function countDate (event, serverTime) {
-  var diff = Math.floor((new Date(serverTime) - new Date(event.date)) / 1000) // second
+function countDate111 (event, serverTime) {
+  var diff = Math.floor((new Date(serverTime) - new Date(event.timer.base)) / 1000) // second
   let spent, timeVisible, willFinish, willStart, willFinish1H, willStart2H
   // console.log(event, diff, serverTime)
   if (event.period === 'Not Started') {
@@ -44,7 +44,6 @@ function countDate (event, serverTime) {
     willStart2H = event.timer.seconds? 15 * 60 + event.timer.seconds : 65 * 60
   }
   // interval
-  console.log(countDown)
   if (!countDown.includes(event.id)) {
     countDown[event.id] = setInterval(() => {
       if ((timeVisible || willStart === 0 || willStart2H === 0) && willFinish) {
@@ -64,6 +63,18 @@ function countDate (event, serverTime) {
       if (spent && willFinish1H) willFinish1H--
       if (spent && willFinish) willFinish--
       if (spent && willStart2H) willStart2H--
+    }, 1000)
+  }
+}
+
+function countDate (event, serverTime) {
+  var diff = event.period === '2H'? Math.floor((new Date(serverTime) - new Date(event.timer.base)) / 1000) - (15 * 60) : Math.floor((new Date(serverTime) - new Date(event.timer.base)) / 1000)
+  if (diff > 0 && !countDown.includes(event.id)) {
+    countDown.push(event.id)
+    setInterval(() => {	
+      const target = document.getElementById('count' + event.id)
+      if (target) target.innerHTML = `${Math.floor(diff / 60)}:${diff % 60 > 9? diff % 60 : '0' + diff % 60}`
+      diff++
     }, 1000)
   }
 }
@@ -164,6 +175,8 @@ const BetTable = ({ betPice }) => {
 
 export const BetSection = ({ betData, id, postEvent }) => {
 
+  // console.log(betData)
+
   return (
     <div className="bet-sec1-lay-back-div">
       <div className="bet-sec1-green-div">
@@ -185,12 +198,17 @@ export const BetSection = ({ betData, id, postEvent }) => {
           </tbody>
         </table>
       </div>
-      {betData.events.map((event, idex) => (event.match_result !== 'Finished' && event.timer)? <div key={event.id}>
+      {betData.events.map((event, idex) => <div key={event.id}>
         <div className="bet-sec1-light-green-div">
           <a href="/bet-detail">
           <h5>{event.title} &nbsp;&nbsp;&nbsp;{event.live_score && `(${event.live_score})`}</h5>
           </a>
-          <h6><span id={'count' + event.id}>{countDate(event, betData.serTime)}</span> &nbsp;&nbsp;&nbsp; <span className="period" id={'period' + event.id}>{event.period && `${event.period}`}</span></h6>
+          <h6>
+            <span id={'count' + event.id}>
+              {(event.period !== 'Finished' && event.period !== 'Half Time' && event.period !== 'Not Started' && event.timer && event.timer.base)? countDate(event, betData.serTime): ''}
+            </span> &nbsp;&nbsp;&nbsp; 
+            <span className="period" id={'period' + event.id}>{event.period && `${event.period}`}</span>
+          </h6>
         </div>
         {
           event.sport_name === 'Football'? ["Home", "Draw", "Away"].map((tdata, index) => <BetTable key={index}
@@ -210,7 +228,7 @@ export const BetSection = ({ betData, id, postEvent }) => {
               id: idex+''+id+''+index, tdata
             }} />)
         }
-      </div> : <></>)}
+      </div>)}
     </div>
   )
 }
