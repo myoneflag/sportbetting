@@ -205,9 +205,13 @@ export const BetSection = ({ betData, id, postEvent }) => {
           <h5>{event.title} &nbsp;&nbsp;&nbsp;{event.live_score && `(${event.live_score})`}</h5>
           </a>
           <h6>
-            <span id={'count' + event.id}>
+            {event.sport_name === 'Football'? <span id={'count' + event.id}>
               {(event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base)? countDate(event, betData.serTime): ''}
-            </span> &nbsp;&nbsp;&nbsp; 
+            </span> : event.sport_name === 'Basketball'? <span id={'count' + event.id}>
+              {(event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base)? countDate(event, betData.serTime): ''}
+            </span> : event.sport_name === 'Tennis'? <span id={'count' + event.id}>
+              {(event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base)? countDate(event, betData.serTime): ''}
+            </span> : <></>} &nbsp;&nbsp;&nbsp; 
             <span className="period" id={'period' + event.id}>{event.period && `${event.period}`}</span>
           </h6>
         </div>
