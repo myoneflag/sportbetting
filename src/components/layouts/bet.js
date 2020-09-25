@@ -127,7 +127,6 @@ export const BetSection = ({ betData, id, postEvent }) => {
 
   const countDate = (event, serverTime) => {
     var diff = Math.floor((new Date(serverTime.replace(' ', 'T')).getTime() - new Date(event.timer.base).getTime()) / 1000)
-    console.log(new Date(serverTime.replace(' ', 'T')), new Date(event.timer.base), diff)
     if (event.period === '2H') diff += event.timer.seconds
     if (diff > 0 && !countDown.includes(event.id)) {
       countDown.push(event.id)
