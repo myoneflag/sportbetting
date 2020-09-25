@@ -10,19 +10,6 @@ function formatDate (date) {
   return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} ${d.getHours()}:${mm}`
 }
 
-function countDate (event, serverTime) {
-  var diff = Math.floor((new Date(serverTime).getTime() - new Date(event.timer.base).getTime()) / 1000)
-  if (event.period === '2H') diff += event.timer.seconds
-  if (diff > 0 && !countDown.includes(event.id)) {
-    countDown.push(event.id)
-    setInterval(() => {	
-      const target = document.getElementById('count' + event.id)
-      if (target) target.innerHTML = `${Math.floor(diff / 60)}:${diff % 60 > 9? diff % 60 : '0' + diff % 60}`
-      diff++
-    }, 1000)
-  }
-}
-
 const BetTable = ({ betPice }) => {
   const { event, target, id, tdata, postEvent, index } = betPice
 
@@ -137,6 +124,19 @@ export const BetSection = ({ betData, id, postEvent }) => {
       }
     })
   }, [betData])
+
+  const countDate = (event, serverTime) => {
+    var diff = Math.floor((new Date(serverTime).getTime() - new Date(event.timer.base).getTime()) / 1000)
+    if (event.period === '2H') diff += event.timer.seconds
+    if (diff > 0 && !countDown.includes(event.id)) {
+      countDown.push(event.id)
+      setInterval(() => {	
+        const target = document.getElementById('count' + event.id)
+        if (target) target.innerHTML = `${Math.floor(diff / 60)}:${diff % 60 > 9? diff % 60 : '0' + diff % 60}`
+        diff++
+      }, 1000)
+    }
+  }
 
   return (
     <div className="bet-sec1-lay-back-div">
