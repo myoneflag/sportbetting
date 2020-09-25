@@ -10,63 +10,6 @@ function formatDate (date) {
   return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} ${d.getHours()}:${mm}`
 }
 
-function countDate111 (event, serverTime) {
-  var diff = Math.floor((new Date(serverTime) - new Date(event.timer.base)) / 1000) // second
-  let spent, timeVisible, willFinish, willStart, willFinish1H, willStart2H
-  // console.log(event, diff, serverTime)
-  if (event.period === 'Not Started') {
-    spent = 0
-    timeVisible = false
-    willFinish = 105 * 60
-    willStart = diff < 0? -diff : 10 * 60
-    willFinish1H = 50 * 60
-    willStart2H = willFinish1H + 15 * 60
-  } else if (event.period === '1H') {
-    spent = diff
-    timeVisible = true
-    willFinish = 105 * 60
-    willStart = null
-    willFinish1H = 50 * 60
-    willStart2H = willFinish1H + 15 * 60
-  } else if (event.period === '2H') {
-    spent = diff - (15 * 60)
-    timeVisible = true
-    willFinish = event.timer.seconds? event.timer.seconds + (50 * 60) : 105 * 60
-    willStart = null
-    willFinish1H = null
-    willStart2H = null
-  } else if (event.period === 'Halftime') {
-    spent = event.timer.seconds? event.timer.seconds : diff
-    timeVisible = false
-    willFinish = event.timer.seconds? event.timer.seconds + (50 * 60) : 105 * 60
-    willStart = null
-    willFinish1H = null
-    willStart2H = event.timer.seconds? 15 * 60 + event.timer.seconds : 65 * 60
-  }
-  // interval
-  if (!countDown.includes(event.id)) {
-    countDown[event.id] = setInterval(() => {
-      if ((timeVisible || willStart === 0 || willStart2H === 0) && willFinish) {
-        if (document.getElementById('count' + event.id)) document.getElementById('count' + event.id).innerHTML = `${Math.floor(spent / 60)}:${spent % 60 > 9? spent % 60 : '0' + spent % 60}`
-        spent++
-      } else {
-        if (document.getElementById('count' + event.id)) document.getElementById('count' + event.id).innerHTML = ''
-        if (willFinish === 0) {
-          clearInterval(countDown[event.id])
-          if (document.getElementById('period' + event.id)) document.getElementById('period' + event.id).innerHTML = 'Finished'
-        }
-        if (willFinish1H === 0) {
-          if (document.getElementById('period' + event.id)) document.getElementById('period' + event.id).innerHTML = '2H'
-        }
-      }
-      if (willStart) willStart--
-      if (spent && willFinish1H) willFinish1H--
-      if (spent && willFinish) willFinish--
-      if (spent && willStart2H) willStart2H--
-    }, 1000)
-  }
-}
-
 function countDate (event, serverTime) {
   var diff = Math.floor((new Date(serverTime).getTime() - new Date(event.timer.base).getTime()) / 1000)
   if (event.period === '2H') diff += event.timer.seconds
