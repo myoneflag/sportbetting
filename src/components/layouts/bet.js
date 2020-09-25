@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useEffect } from 'react'
 import { country } from '../../helpers';
 
 let countDown = []
@@ -177,6 +177,23 @@ const BetTable = ({ betPice }) => {
 export const BetSection = ({ betData, id, postEvent }) => {
 
   // console.log(betData)
+  useEffect(() => {
+    betData.events.map((event, idex) => {
+      switch (event.sport_name) {
+        case 'Football':
+          if (event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base) countDate(event, betData.serTime)
+          break
+        case 'Basketball':
+          if (event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base) countDate(event, betData.serTime)
+          break
+        case 'Tennis':
+          if (event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base) countDate(event, betData.serTime)
+          break
+        default:
+          break
+      }
+    })
+  }, [betData])
 
   return (
     <div className="bet-sec1-lay-back-div">
@@ -205,13 +222,7 @@ export const BetSection = ({ betData, id, postEvent }) => {
           <h5>{event.title} &nbsp;&nbsp;&nbsp;{event.live_score && `(${event.live_score})`}</h5>
           </a>
           <h6>
-            {event.sport_name === 'Football'? <span id={'count' + event.id}>
-              {(event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base)? countDate(event, betData.serTime): ''}
-            </span> : event.sport_name === 'Basketball'? <span id={'count' + event.id}>
-              {(event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base)? countDate(event, betData.serTime): ''}
-            </span> : event.sport_name === 'Tennis'? <span id={'count' + event.id}>
-              {(event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base)? countDate(event, betData.serTime): ''}
-            </span> : <></>} &nbsp;&nbsp;&nbsp; 
+            <span id={'count' + event.id}></span> &nbsp;&nbsp;&nbsp; 
             <span className="period" id={'period' + event.id}>{event.period && `${event.period}`}</span>
           </h6>
         </div>
