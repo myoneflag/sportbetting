@@ -130,9 +130,9 @@ export const BetSection = ({ betData, id, postEvent }) => {
     if (event.period === '2H') diff += event.timer.seconds
     if (diff > 0 && !countDown.includes(event.id)) {
       countDown.push(event.id)
-      setInterval(() => {	
-        const target = document.getElementById('count' + event.id)
-        if (target) target.innerHTML = `${Math.floor(diff / 60)}:${diff % 60 > 9? diff % 60 : '0' + diff % 60}`
+      setInterval(() => {
+        console.log(document.getElementById('count' + event.id).innerHTML)
+        if (document.getElementById('count' + event.id)) document.getElementById('count' + event.id).innerHTML = `${Math.floor(diff / 60)}:${diff % 60 > 9? diff % 60 : '0' + diff % 60}`
         diff++
       }, 1000)
     }
