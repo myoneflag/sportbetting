@@ -164,7 +164,7 @@ export const Layout = () => {
         Authorization: "Bearer " + localStorage.getItem('access')
       }
     }
-    await axios.delete(apiUrl + apis.deleteBet.replace('{event_slug}', betslip.event.title.replace(' - ', '-').replace(/\s/g, '-').toLowerCase()).replace('{id}', betslip.id), config)
+    await axios.delete(apiUrl + apis.deleteBet.replace('{event_slug}', betslip.event.slug).replace('{id}', betslip.id), config)
       .then((res) => {
         if (res.statusText === "OK") {
           setAlert({type: 'success', msg: 'Deleted successfully'})

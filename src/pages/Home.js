@@ -3,7 +3,7 @@ import React, { useEffect, useCallback } from 'react'
 // import { bet } from '../helpers'
 // import { BetSection } from '../components/layouts/bet'
 import { BetSlip } from '../components/layouts/betslip'
-// import { Detail } from '../components/layouts/detail'
+import { Detail } from '../components/layouts/detail'
 import { Events } from '../components/layouts/events'
 import { CarouselSection } from '../components/layouts/carousel'
 
@@ -21,7 +21,7 @@ export const Home = (props) => {
         <div className="row bet-sec1-row1">
           <div className="col-sm-9 bet-sec1-row1-div2">
             <CarouselSection />
-            {/* detail? <Detail detail={detail} /> :  */}
+            {/* <Detail detail={"hello"} /> */}
             <Events {...props} />
           </div>
           <div className="col-sm-3 bet-sec1-row1-div3">

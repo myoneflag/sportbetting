@@ -106,22 +106,23 @@ const BetTable = ({ betPice }) => {
 
 export const BetSection = ({ betData, id, postEvent }) => {
 
-  // console.log(betData)
+  console.log(betData)
   useEffect(() => {
     betData.events.map((event, idex) => {
-      switch (event.sport_name) {
-        case 'Football':
-          if (event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base) countDate(event, betData.serTime)
-          break
-        case 'Basketball':
-          if (event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base) countDate(event, betData.serTime)
-          break
-        case 'Tennis':
-          if (event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base) countDate(event, betData.serTime)
-          break
-        default:
-          break
-      }
+      if (event.match_result)
+        switch (event.sport_name) {
+          case 'Football':
+            if (event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base) countDate(event, betData.serTime)
+            break
+          case 'Basketball':
+            if (event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base) countDate(event, betData.serTime)
+            break
+          case 'Tennis':
+            if (event.period !== 'Finished' && event.period !== 'Halftime' && event.period !== 'Not Started' && event.timer && event.timer.base) countDate(event, betData.serTime)
+            break
+          default:
+            break
+        }
     })
   }, [betData])
 
@@ -161,11 +162,13 @@ export const BetSection = ({ betData, id, postEvent }) => {
       {betData.events.map((event, idex) => <div key={event.id}>
         <div className="bet-sec1-light-green-div">
           <a href="/bet-detail">
-          <h5>{event.title} &nbsp;&nbsp;&nbsp;{event.live_score && `(${event.live_score})`}</h5>
+            <h5>{event.title} &nbsp;&nbsp;&nbsp;{event.live_score && `(${event.live_score})`}</h5>
           </a>
           <h6>
-            <span id={'count' + event.id}></span> &nbsp;&nbsp;&nbsp; 
-            <span className="period" id={'period' + event.id}>{event.period && `${event.period}`}</span>
+            {event.match_result === "Live" ? <>
+              <span id={'count' + event.id}></span> &nbsp;&nbsp;&nbsp; 
+              <span className="period" id={'period' + event.id}>{event.period && `${event.period}`}</span>
+              </> : <span id={'count' + event.id}>{formatDate (event.date)}</span>}
           </h6>
         </div>
         {

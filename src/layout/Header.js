@@ -413,7 +413,7 @@ const Header = (props) => {
             <li className={`active-menu ${currentPath === Paths.HOME ? 'active' : ''}`}>
               <a className="nav-link" href="/">Live games</a>
             </li>
-            <li className={`active-menu ${currentPath === Paths.FUTURE ? 'active' : ''}`}>
+            <li className={`active-menu ${currentPath.includes(Paths.FUTURE) ? 'active' : ''}`}>
               <a className="nav-link" href="/future">Future games</a>
             </li>
             <li className={`active-menu ${currentPath === Paths.CONTACT ? 'active' : ''}`} onClick={() => setOpenContact(true)}>
